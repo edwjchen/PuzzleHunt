@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TBPuzzle</title>
+		<title>TBPuzzle - Home</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel='icon' href='images/favi.png' type='image/png'/ >
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload landing">
 		<!-- Wrapper -->
 		<div id="wrapper">
 			<!-- Header -->
@@ -45,46 +46,25 @@
 				<div class="inner">
 					<h1>Welcome to TBPuzzle!</h1> 
 					<p>A рuzzlehunt or a puzzle hunt is a puzzle game where teams compete to solve a series of puzzles at a particular site, in multiple sites or via the internet. Groups of puzzles in a puzzle hunt are often connected by a metapuzzle, leading to answers which combine into a final set of solutions.</p>
-					<p>Sign up below!</p>
-					<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
-					<div class="row">
+					<div id="sign-in-opts" class="row">
 						<div class="col-6">
-							<h2>Login</h2>
 							<form id="login" method="post" onsubmit="return login()" action="/login">
-								<div class="fields">
-									<div class="field">
-										<input type="email" name="email" id="login-email" placeholder="email@ucsd.edu" />
-										<div id="email-login-wrong" style="color: #f2849e;"></div>
-									</div>
-									<div class="field">
-										<input type="password" name="password" id="login-password" placeholder="Password" />
-										<div id="password-login-wrong" style="color: #f2849e;"></div>
-									</div>
-								</div>
 								<ul class="actions">
 									<li><input type="submit" value="Login" class="primary" /></li>
 								</ul>
-							</form>
+								<div id="login-error" style="color:#f2849e"></div>
+							</form> 
 						</div>
 						<div class="col-6">
-							<h2>Sign up</h2>
 							<form id="signup" method="post" onsubmit="return signup()" action="/signup">
-								<div class="fields">
-									<div class="field">
-										<input type="email" name="email" id="signup-email" placeholder="email@ucsd.edu" />
-										<div id="email-signup-wrong" style="color: #f2849e;"></div>
-									</div>
-									<div class="field">
-										<input type="password" name="password" id="signup-password" placeholder="Password" />
-										<div id="password-signup-wrong" style="color: #f2849e;"></div>
-									</div>
-								</div>
 								<ul class="actions">
 									<li><input type="submit" value="Sign Up" class="primary" /></li>
 								</ul>
+								<div id="signup-error" style="color:#f2849e"></div>
 							</form>
 						</div>
 					</div>
+					<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
 				</div>
 			</div>
 		</div>
@@ -113,7 +93,7 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
-		<script src="assets/js/other.js"></script>
+		<script src="assets/js/index.js"></script>
 	</body>
 </html>
 		

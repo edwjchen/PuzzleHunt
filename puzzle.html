@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Phantom by HTML5 UP</title>
+		<title>TBPuzzle - Puzzles</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel='icon' href='images/favi.png' type='image/png'/ >
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload landing">
 		<!-- Wrapper -->
 			<div id="wrapper">
 
@@ -16,16 +17,17 @@
 					<div class="inner">
 
 						<!-- Logo -->
-							<a href="index.html" class="logo">
-								<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">TBPuzzle</span>
-							</a>
+						<a href="index.html" class="logo" onmouseover="onHover();" onmouseout="offHover();">
+							<span class="symbol"><img id="logo" src="images/logo2.svg" alt=""/></span>
+							<span class="title">TBPuzzle</span>
+						</a>
 
 						<!-- Nav -->
-							<nav>
-								<ul>
-									<li><a href="#menu">Menu</a></li>
-								</ul>
-							</nav>
+						<nav>
+							<ul>
+								<li><a href="#menu">Menu</a></li>
+							</ul>
+						</nav>
 
 					</div>
 				</header>
@@ -34,7 +36,7 @@
 				<nav id="menu">
 					<h2>Menu</h2>
 					<ul>
-						<li><a href="index.html">Home</a></li>
+						<li id="menu-home"><a href="index.html">Home</a></li>
 						<li><a href="team.html">Team</a></li>
 						<li><a href="puzzle.html">Puzzles</a></li>
 					</ul>
@@ -270,12 +272,30 @@
 
 			</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+		<script>
+			// Your web app's Firebase configuration
+			var firebaseConfig = {
+				apiKey: "AIzaSyD0PQiCeZqc9Ne1QCX0D4zRls35KJYBe8A",
+				authDomain: "tbpuzzlehunt.firebaseapp.com",
+				databaseURL: "https://tbpuzzlehunt.firebaseio.com",
+				projectId: "tbpuzzlehunt",
+				storageBucket: "tbpuzzlehunt.appspot.com",
+				messagingSenderId: "737659509987",
+				appId: "1:737659509987:web:c1e3317ad8e1d23700b9d6",
+				measurementId: "G-YBW1LK2DZ7"
+			};
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		</script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+  		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/puzzle.js"></script>
 	</body>
 </html>

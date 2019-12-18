@@ -9,7 +9,7 @@ var http = require('http'),
 
 const admin = require('firebase-admin');
 
-let serviceAccount = require('path/to/serviceAccountKey.json');
+let serviceAccount = require('./credentials.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -26,16 +26,35 @@ app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, 'index.html'));
 })
 
-app.post('/login', function(req, res) {
- 	  console.log(req.body.email)
-  	return res.redirect('team.html'); 
-})
-
 app.post('/signup', function(req, res) {
- 	console.log(req.body.email)
-
- 	return res.redirect('team.html');
+  let userref = db.collection('users').doc(req.body.email);
+  userref.get().then(doc => {
+    if (!doc.exists) {
+      db.collection('users').doc(req.body.email).set({
+        email: req.body.email,
+        team: "",
+        team_leader: false
+      }).then(ref => {
+        console.log('Added document with ID: ', req.body.email);
+      });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(500)
+    }
+  })
 })
+
+app.post('/login', function(req, res) {
+  let userref = db.collection('users').doc(req.body.email);
+  userref.get().then(doc => {
+    if (!doc.exists) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200)
+    }
+  })
+})
+
 
 var server = http.createServer(app);
 

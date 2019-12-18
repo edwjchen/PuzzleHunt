@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>TBPuzzle</title>
+		<title>TBPuzzle - Team</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel='icon' href='images/favi.png' type='image/png'/ >
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload landing">
 		<!-- Wrapper -->
 			<div id="wrapper">
 				<!-- Header -->
@@ -43,62 +44,93 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Team Matching</h1>
-							<div class="row">
-								<div class="col-6">
-									<h2>Create a team</h2>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<input type="text" name="name" id="name" placeholder="Name" />
+							<div id="notregistered">
+								<h2>Please sign up or login first!</h2>
+								<form action="/index.html">
+									<ul class="actions">
+										<li><input type="submit" value="Sign up here" class="primary" /></li>
+									</ul>
+								</form>
+							</div>
+							<div class="registered">
+								<div id = "intro_title"></div>
+								<h1>Team Matching</h1>
+								<div class="row">
+									<div class="col-6">
+										<h2>Create a team</h2>
+										<form method="post" action="#">
+											<div class="fields">
+												<div class="field half">
+													<input type="text" name="name" id="name" placeholder="Name" />
+												</div>
+												<div class="field half">
+													<input type="email" name="email" id="email" placeholder="Email" />
+												</div>
+												<div class="field">
+													<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
+												</div>
 											</div>
-											<div class="field half">
-												<input type="email" name="email" id="email" placeholder="Email" />
+											<ul class="actions">
+												<li><input type="submit" value="Create Team" class="primary" /></li>
+											</ul>
+										</form>
+									</div>
+									<div class="col-6">
+										<h2>Join a team</h2>
+										<form method="post" action="#">
+											<div class="fields">
+												<div class="field half">
+													<input type="text" name="name" id="name" placeholder="Name" />
+												</div>
+												<div class="field half">
+													<input type="email" name="email" id="email" placeholder="Email" />
+												</div>
+												<div class="field">
+													<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
+												</div>
 											</div>
-											<div class="field">
-												<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Create Team" class="primary" /></li>
-										</ul>
-									</form>
-								</div>
-								<div class="col-6">
-									<h2>Join a team</h2>
-									<form method="post" action="#">
-										<div class="fields">
-											<div class="field half">
-												<input type="text" name="name" id="name" placeholder="Name" />
-											</div>
-											<div class="field half">
-												<input type="email" name="email" id="email" placeholder="Email" />
-											</div>
-											<div class="field">
-												<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
-											</div>
-										</div>
-										<ul class="actions">
-											<li><input type="submit" value="Join Team" class="primary" /></li>
-										</ul>
-									</form>
+											<ul class="actions">
+												<li><input type="submit" value="Join Team" class="primary" /></li>
+											</ul>
+										</form>
+									</div>
 								</div>
 							</div>
 							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
-							<ul class="actions">
-								<li><a href="puzzle.html"><input type="submit" value="Puzzles" class="primary" /></a></li>
-							</ul>
+							<div class="registered">
+								<ul class="actions">
+									<li><a href="puzzle.html"><input type="submit" value="Puzzles" class="primary" /></a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 			</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/other.js"></script>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-app.js"></script>
+		<script>
+			// Your web app's Firebase configuration
+			var firebaseConfig = {
+				apiKey: "AIzaSyD0PQiCeZqc9Ne1QCX0D4zRls35KJYBe8A",
+				authDomain: "tbpuzzlehunt.firebaseapp.com",
+				databaseURL: "https://tbpuzzlehunt.firebaseio.com",
+				projectId: "tbpuzzlehunt",
+				storageBucket: "tbpuzzlehunt.appspot.com",
+				messagingSenderId: "737659509987",
+				appId: "1:737659509987:web:c1e3317ad8e1d23700b9d6",
+				measurementId: "G-YBW1LK2DZ7"
+			};
+			// Initialize Firebase
+			firebase.initializeApp(firebaseConfig);
+		</script>
+		<script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
+  		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/team.js"></script>
 
 	</body>
 </html>
