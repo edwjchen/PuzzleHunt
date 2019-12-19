@@ -11,9 +11,13 @@ const admin = require('firebase-admin');
 
 let serviceAccount = require('./credentials.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+if (serviceAccount) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+} else {
+  admin.initializeApp();
+}
 
 let db = admin.firestore();
 
@@ -27,15 +31,16 @@ app.get('/', function(req, res){
 })
 
 app.post('/signup', function(req, res) {
-  let userref = db.collection('users').doc(req.body.email);
+  let userref = db.collection('users').doc(req.body.uid);
   userref.get().then(doc => {
     if (!doc.exists) {
-      db.collection('users').doc(req.body.email).set({
+      db.collection('users').doc(req.body.uid).set({
+        uid: req.body.uid,
         email: req.body.email,
         team: "",
         team_leader: false
       }).then(ref => {
-        console.log('Added document with ID: ', req.body.email);
+        console.log('Added document with ID: ', req.body.uid);
       });
       res.sendStatus(200);
     } else {
@@ -45,7 +50,7 @@ app.post('/signup', function(req, res) {
 })
 
 app.post('/login', function(req, res) {
-  let userref = db.collection('users').doc(req.body.email);
+  let userref = db.collection('users').doc(req.body.uid);
   userref.get().then(doc => {
     if (!doc.exists) {
       res.sendStatus(500);

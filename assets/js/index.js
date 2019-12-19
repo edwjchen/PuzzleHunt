@@ -12,9 +12,9 @@ function offHover()
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (!user) {
-    $("#sign-in-opts").css('display', 'block-inline');
+    $("#sign-in-opts").show();
   } else {
-  	$("#sign-in-opts").css('display', 'none');
+  	$("#sign-in-opts").hide();
     $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
   }
 });
@@ -31,14 +31,16 @@ function signup() {
             url: "/signup",
             type: "POST",
             data: {
+            	uid: result.user.uid,
                 email: result.user.email
             },
             success: function(data, textStatus, jqXHR) {
-			    $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
         		window.location.href = 'team.html';
-			},
+        	},
 			error: function (jqXHR, textStatus, errorThrown) {
 				$("#signup-error").text("* Email already registered as an account")
+				$("#menu ul li:last").remove();
+				signout();	
 			}
         });
 	}).catch(function(error) {
@@ -61,15 +63,15 @@ function login() {
             url: "/login",
             type: "POST",
             data: {
-                email: result.user.email
+                uid: result.user.uid
             },
             success: function(data, textStatus, jqXHR) {
-			    $("#sign-in-opts").css('display', 'none');
-			    $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
         		window.location.href = 'team.html';
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
+				$("#menu ul li:last").remove();
 				$("#login-error").text("* Email is not registered as an account")
+				signout();
 			}
         });
 	}).catch(function(error) {
@@ -87,4 +89,6 @@ function signout() {
 	  // An error happened.
 	});
 }
+
+
 
