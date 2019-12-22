@@ -19,6 +19,7 @@
   "homepage": "https://github.com/edwjchen/PuzzleHunt#readme",
   "dependencies": {
     "aws-sdk": "^2.590.0",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "express-validator": "^6.3.0",
     "firebase-admin": "^8.8.0",

@@ -17,6 +17,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   	$("#sign-in-opts").hide();
     $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
   }
+  $('body').removeClass('is-preload');
 });
 
 function signup() {
@@ -35,7 +36,7 @@ function signup() {
                 email: result.user.email
             },
             success: function(data, textStatus, jqXHR) {
-        		window.location.href = 'team.html';
+            	window.location.href = 'team.html';
         	},
 			error: function (jqXHR, textStatus, errorThrown) {
 				$("#signup-error").text("* Email already registered as an account")

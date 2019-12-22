@@ -42,68 +42,74 @@
 				</nav>
 
 				<!-- Main -->
-					<div id="main">
-						<div class="inner">
-							<div id="notregistered">
-								<h2>Please sign up or login first!</h2>
-								<form action="/index.html">
-									<ul class="actions">
-										<li><input type="submit" value="Sign up here" class="primary" /></li>
-									</ul>
-								</form>
+				<div id="main">
+					<div class="inner">
+						<div id="notregistered">
+							<h2>Please sign up or login first!</h2>
+							<form action="/index.html">
+								<ul class="actions">
+									<li><input type="submit" value="Sign up here" class="primary" /></li>
+								</ul>
+							</form>
+						</div>
+						<div class="registered">
+							<div><h1 id = "intro_title"></h1></div>
+							<h2 style="color: #f2849e;">Team Matching</h2>
+							<div class="in-team">
+								<h3 style="display:inline;">Team Name:</h3><p id="teamname"></p>
+								<h3 style="display:inline;">Secret Key: </h3><p id="secretkeydisplay"></p>
+								<h3 style="display:inline;">Team:</h3>
+								<ul id="members" class="actions">
+								</ul>
 							</div>
-							<div class="registered">
-								<div id = "intro_title"></div>
-								<h1>Team Matching</h1>
+							<div class="no-team">
+								<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
 								<div class="row">
 									<div class="col-6">
-										<h2>Create a team</h2>
-										<form method="post" action="#">
+										<h2 style="color: #f2849e;">Create a team</h2>
+										<form id="create" method="post" onsubmit="return createTeam()" action="/createTeam">
 											<div class="fields">
-												<div class="field half">
-													<input type="text" name="name" id="name" placeholder="Name" />
-												</div>
-												<div class="field half">
-													<input type="email" name="email" id="email" placeholder="Email" />
-												</div>
 												<div class="field">
-													<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
+													<input type="text" name="teamname" id="create-teamname" placeholder="Team Name"></input>
 												</div>
 											</div>
 											<ul class="actions">
 												<li><input type="submit" value="Create Team" class="primary" /></li>
 											</ul>
 										</form>
+										<div id="create-error"></div>
 									</div>
+									<span style="border-right:1px solid; color: #585858;"></span>
 									<div class="col-6">
-										<h2>Join a team</h2>
-										<form method="post" action="#">
+										<h2 style="color: #f2849e;">Join a team</h2>
+										<form id="join" method="post" onsubmit="return joinTeam()" action="/joinTeam">
 											<div class="fields">
 												<div class="field half">
-													<input type="text" name="name" id="name" placeholder="Name" />
+													<input type="text" name="teamname" id="join-teamname" placeholder="Team Name"></input>
 												</div>
 												<div class="field half">
-													<input type="email" name="email" id="email" placeholder="Email" />
-												</div>
-												<div class="field">
-													<input type="text" name="teamname" id="teamname" placeholder="Team Name"></input>
+													<input type="text" name="teamname" id="secretkey" placeholder="Secret Key"></input>
 												</div>
 											</div>
 											<ul class="actions">
 												<li><input type="submit" value="Join Team" class="primary" /></li>
 											</ul>
 										</form>
+										<div id="join-error"></div>
 									</div>
 								</div>
 							</div>
-							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
-							<div class="registered">
-								<ul class="actions">
-									<li><a href="puzzle.html"><input type="submit" value="Puzzles" class="primary" /></a></li>
-								</ul>
-							</div>
 						</div>
+						<div class="registered in-team">
+							<ul class="actions">
+								<li><input type="submit" value="Quit Team" class="primary" onclick="quitTeam()"/></a></li>
+								<li><a href="puzzle.html"><input type="submit" value="Puzzles" class="primary" /></a></li>
+							</ul>
+						</div>
+						<br>
+						<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
 					</div>
+				</div>
 			</div>
 
 		<!-- The core Firebase JS SDK is always required and must be listed first -->
