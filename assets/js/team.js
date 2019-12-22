@@ -5,7 +5,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     $(".registered").show()
 	$("#notregistered").hide()
-    $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
+    $("#menu ul").append(`<li><a href="index" onclick="signout()">Sign Out</a></li>`)
     $("#intro_title").text("Welcome "+user.displayName.split(" ")[0]+"!");
     getTeam();
   }

@@ -25,10 +25,73 @@ let db = admin.firestore();
 var app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(express.static(__dirname));
+app.use("/assets", express.static(__dirname+"/assets"));
+app.use("/images", express.static(__dirname+"/images"));
+
 
 app.get('/', function(req, res){
   res.sendFile(path.join(__dirname, 'index.html'));
+})
+
+app.get('/team', function(req, res){
+  res.sendFile(path.join(__dirname, 'team.html'));
+})
+
+app.get('/puzzle', function(req, res){
+  let num = req.query.num;
+  switch(num) {
+    case '1':
+      res.sendFile(path.join(__dirname, 'puzzle1.html'));
+      break;
+    case '2':
+      res.sendFile(path.join(__dirname, 'puzzle2.html'));
+      break;
+    case '3':
+      res.sendFile(path.join(__dirname, 'puzzle3.html'));
+      break;
+    case '4':
+      res.sendFile(path.join(__dirname, 'puzzle4.html'));
+      break;
+    case '5':
+      res.sendFile(path.join(__dirname, 'puzzle5.html'));
+      break;
+    case '6':
+      res.sendFile(path.join(__dirname, 'puzzle6.html'));
+      break;
+    case '7':
+      res.sendFile(path.join(__dirname, 'puzzle7.html'));
+      break;
+    case '8':
+      res.sendFile(path.join(__dirname, 'puzzle8.html'));
+      break;
+    case '9':
+      res.sendFile(path.join(__dirname, 'puzzle9.html'));
+      break;
+    case '10':
+      res.sendFile(path.join(__dirname, 'puzzle10.html'));
+      break;
+    case '11':
+      res.sendFile(path.join(__dirname, 'puzzle11.html'));
+      break;
+    case '12':
+      res.sendFile(path.join(__dirname, 'puzzle12.html'));
+      break;
+    case '13':
+      res.sendFile(path.join(__dirname, 'puzzle13.html'));
+      break;
+    case '14':
+      res.sendFile(path.join(__dirname, 'puzzle14.html'));
+      break;
+    case '15':
+      res.sendFile(path.join(__dirname, 'puzzle15.html'));
+      break;
+    default:
+      res.sendFile(path.join(__dirname, 'puzzle.html'));
+  }
+})
+
+app.get('/404', function(req, res){
+  res.sendFile(path.join(__dirname, '404.html'));
 })
 
 app.post('/signup', function(req, res) {
@@ -69,7 +132,7 @@ app.post('/login', function(req, res) {
 })
 
 app.post('/createTeam', function(req, res) {
-  var secretkey = crypto.randomBytes(20).toString('hex');
+  var secretkey = crypto.randomBytes(16).toString('hex');
   req.body.teamname = req.body.teamname.toLowerCase().trim();
   console.log(req.body.teamname)
   let teamref = db.collection('teams').doc(req.body.teamname);

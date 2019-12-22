@@ -1,3 +1,5 @@
+let teamname;
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (!user) {
     $(".registered").hide()
@@ -5,7 +7,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     $(".registered").show()
 	  $("#notregistered").hide()
-    $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
+    $("#menu ul").append(`<li><a href="index" onclick="signout()">Sign Out</a></li>`)
     getTeam()
   }
 });
@@ -21,20 +23,12 @@ function getTeam() {
       if (data.team != '') {
         $(".in-team").show();
         $(".no-team").hide();
-        $("#teamname").text(data.team);
-        if (data.team_leader){
-          $("#secretkeydisplay").text(data.secretkey);
-        } else {
-          $("#secretkeydisplay").text("Ask the team leader!");
-        }
+        teamname = data.team;
     } else {
         $(".no-team").show();
         $(".in-team").hide();
     }
-    $('#members').empty();
-    data.emails.forEach(function(email) {
-      $('#members').append(`<li>`+email+`</li>`)
-    }) 
+
     $('body').removeClass('is-preload');
   },
   error: function (jqXHR, textStatus, errorThrown) {
@@ -62,4 +56,21 @@ function signout() {
 	}).catch(function(error) {
 	  // An error happened.
 	});
+}
+
+function verify() {
+  $.ajax({
+    url: "/verify",
+    type: "POST",
+    data: {
+      teamname: teamname,
+      ans: $("#answer").val()
+    },
+    success: function(data, textStatus, jqXHR) {
+    
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      
+    }
+  });
 }

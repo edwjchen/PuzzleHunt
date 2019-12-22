@@ -15,7 +15,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#sign-in-opts").show();
   } else {
   	$("#sign-in-opts").hide();
-    $("#menu ul").append(`<li><a href="index.html" onclick="signout()">Sign Out</a></li>`)
+    $("#menu ul").append(`<li><a href="index" onclick="signout()">Sign Out</a></li>`)
   }
   $('body').removeClass('is-preload');
 });
@@ -36,7 +36,7 @@ function signup() {
                 email: result.user.email
             },
             success: function(data, textStatus, jqXHR) {
-            	window.location.href = 'team.html';
+            	window.location.href = 'team';
         	},
 			error: function (jqXHR, textStatus, errorThrown) {
 				$("#signup-error").text("* Email already registered as an account")
@@ -67,7 +67,7 @@ function login() {
                 uid: result.user.uid
             },
             success: function(data, textStatus, jqXHR) {
-        		window.location.href = 'team.html';
+        		window.location.href = 'team';
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				$("#menu ul li:last").remove();
