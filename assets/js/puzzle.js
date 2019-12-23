@@ -63,7 +63,7 @@ function getTeam() {
       arr.forEach(id => {
         $("#"+id).removeClass();
         $("#"+id).addClass("style0");
-        $("#"+id).children('a').children('h2').text("Done")
+        $("#"+id).children('a').children('h2').text("Solved")
       })
       $('body').removeClass('is-preload');
 
