@@ -12,21 +12,21 @@ let team_times = {}
 let team_scores = {}
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
 let answers = {
-  '1': process.env.PUZZLE_ANS_1, 
-  '2': process.env.PUZZLE_ANS_2, 
-  '3': process.env.PUZZLE_ANS_3, 
-  '4': process.env.PUZZLE_ANS_4, 
-  '5': process.env.PUZZLE_ANS_5, 
-  '6': process.env.PUZZLE_ANS_6, 
-  '7': process.env.PUZZLE_ANS_7, 
-  '8': process.env.PUZZLE_ANS_8, 
-  '9': process.env.PUZZLE_ANS_9, 
-  '10': process.env.PUZZLE_ANS_10, 
-  '11': process.env.PUZZLE_ANS_11, 
-  '12': process.env.PUZZLE_ANS_12, 
-  '13': process.env.PUZZLE_ANS_13, 
-  '14': process.env.PUZZLE_ANS_14, 
-  '15': process.env.PUZZLE_ANS_15, 
+  '1': 'answer', 
+  '2': 'answer', 
+  '3': 'answer', 
+  '4': 'answer', 
+  '5': 'answer', 
+  '6': 'answer', 
+  '7': 'answer', 
+  '8': 'answer', 
+  '9': 'answer', 
+  '10': 'answer', 
+  '11': 'answer', 
+  '12': 'answer', 
+  '13': 'answer', 
+  '14': 'answer', 
+  '15': 'answer', 
 }
 const admin = require('firebase-admin');
 
