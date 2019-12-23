@@ -70,14 +70,14 @@
 										<form id="create" method="post" onsubmit="return createTeam()" action="/createTeam">
 											<div class="fields">
 												<div class="field">
-													<input type="text" name="teamname" id="create-teamname" placeholder="Team Name"></input>
+													<input type="text" name="teamname" id="create-teamname" placeholder="Team Name" maxlength="16"></input>
 												</div>
 											</div>
 											<ul class="actions">
 												<li><input type="submit" value="Create Team" class="primary" /></li>
 											</ul>
 										</form>
-										<div id="create-error"></div>
+										<div id="create-error" style="color: #f2849e;"></div>
 									</div>
 									<span style="border-right:1px solid; color: #585858;"></span>
 									<div class="col-6">
@@ -85,17 +85,17 @@
 										<form id="join" method="post" onsubmit="return joinTeam()" action="/joinTeam">
 											<div class="fields">
 												<div class="field half">
-													<input type="text" name="teamname" id="join-teamname" placeholder="Team Name"></input>
+													<input type="text" name="teamname" id="join-teamname" placeholder="Team Name" maxlength="16"></input>
 												</div>
 												<div class="field half">
-													<input type="text" name="teamname" id="secretkey" placeholder="Secret Key"></input>
+													<input type="text" name="teamname" id="secretkey" placeholder="Secret Key" maxlength="20"></input>
 												</div>
 											</div>
 											<ul class="actions">
 												<li><input type="submit" value="Join Team" class="primary" /></li>
 											</ul>
 										</form>
-										<div id="join-error"></div>
+										<div id="join-error" style="color: #f2849e;"></div>
 									</div>
 								</div>
 							</div>
