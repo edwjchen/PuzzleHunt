@@ -66,19 +66,25 @@
 						<div class="in-team">
 							<header>
 								<h1>Puzzle 5</h1>
+								<ul class="actions">
+									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
+								</ul>
 							</header>
 							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
-							<form id="join" method="post" onsubmit="return checkAnswer()" action="/puzzle1">
+							<form id="puzzle-box" method="post" onsubmit="return verify()">
 								<div class="fields">
 									<div class="field half">
 										<input type="text" name="answer" id="answer" placeholder="Answer"></input>
+										<div id="answer-error" style="color: #f2849e;"></div>
 									</div>
 								</div>
 								<ul class="actions">
 									<li><input type="submit" value="Submit" class="primary" /></li>
 								</ul>
 							</form>
-							<div id="answer-error"></div>
+							<div id="puzzle-done">
+								<h2>Done</h2>
+							</div>
 						</div>
 					</div>
 				</div>

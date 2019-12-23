@@ -8,6 +8,26 @@ var http = require('http'),
     crypto = require('crypto'),
     port = process.env.PORT || 3000;
 
+let team_times = {}
+let team_scores = {}
+let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+let answers = {
+  '1': 'answer', 
+  '2': 'answer', 
+  '3': 'answer', 
+  '4': 'answer', 
+  '5': 'answer', 
+  '6': 'answer', 
+  '7': 'answer', 
+  '8': 'answer', 
+  '9': 'answer', 
+  '10': 'answer', 
+  '11': 'answer', 
+  '12': 'answer', 
+  '13': 'answer', 
+  '14': 'answer', 
+  '15': 'answer', 
+}
 const admin = require('firebase-admin');
 
 let serviceAccount = require('./credentials.json');
@@ -155,7 +175,7 @@ app.post('/createTeam', function(req, res) {
           db.collection('users').doc(req.body.uid).set(
             userdata
           ).then(ref2 => {
-            console.log('Added document with ID: ', req.body.teamname);
+            //console.log('Added document with ID: ', req.body.teamname);
             res.send({
               team: req.body.teamname,
               team_leader: true,
@@ -192,7 +212,7 @@ app.post('/getTeam', function(req, res) {
           db.collection('users').where('uid', 'in', members).get().then(function(querySnapshot) {
             var emails = [];
             querySnapshot.forEach(function(memberdoc) {
-              console.log(memberdoc.data().uid, ' => ', doc.data());
+              //console.log(memberdoc.data().uid, ' => ', doc.data());
               emails.push(memberdoc.data().email);
             });
             let userdata = userdoc.data();
@@ -294,6 +314,72 @@ app.post('/quitTeam', function(req, res) {
       })
     }
   })
+})
+
+app.post('/verifyDone', function(req,res) {
+  if (!(req.body.team in team_scores)) {
+    team_scores[req.body.team] = new Set();
+    res.sendStatus(500);
+  } else {
+    if (team_scores[req.body.team].has(req.body.num)) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(500);
+    }
+  }
+});
+
+app.post('/verifyAllDone', function(req,res) {
+  if (!(req.body.team in team_scores)) {
+    team_scores[req.body.team] = new Set();
+    res.sendStatus(500);
+  } else {
+    res.send({done:Array.from(team_scores[req.body.team])})
+  }
+});
+
+
+app.post('/verify', function(req,res) {
+  req.body.ans = req.body.ans.toLowerCase().trim();
+  if (!(req.body.team in team_scores)) {
+    team_scores[req.body.team] = new Set();
+  }
+
+  if (req.body.num in nums){
+    let now = Date.now();
+    if (req.body.team in team_times) {
+      if (team_times[req.body.team] + 2000 < now) {
+        if (req.body.ans == answers[req.body.num]) {
+          team_scores[req.body.team].add(req.body.num)
+          res.sendStatus(200);
+        } else {
+          res.status(400).send({
+             message: 'wrong'
+          });
+          team_times[req.body.team] = now;
+        }
+      } else {
+        res.status(400).send({
+          message: 'fast'
+        });
+      }
+    } else {
+      if (req.body.ans == 'answer') {
+        team_scores[req.body.team].add(req.body.num)
+        res.sendStatus(200);
+      } else {
+        res.status(400).send({
+           message: 'wrong'
+        });
+        team_times[req.body.team] = now;
+      }
+    }
+  } else {
+    res.status(400).send({
+      message: 'server error'
+    });
+    team_times[req.body.team] = now;
+  }
 })
 
 var server = http.createServer(app);
