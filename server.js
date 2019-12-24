@@ -10,7 +10,11 @@ var http = require('http'),
 
 let team_times = {}
 let team_scores = {}
+let team_ans_time = {}
+let leaderboard = []
+let lastLeaderboard = Date.now()
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+
 let answers = {
   '1': 'answer', 
   '2': 'answer', 
@@ -42,6 +46,52 @@ if (serviceAccount) {
 
 let db = admin.firestore();
 
+async function updateTeams() {
+  const snapshot = await db.collection('teams').get().catch(function(error) {
+    // Handle Errors here.
+    console.log(error)
+  });
+  snapshot.forEach(function(doc) {
+    let teamname = doc.data().name;
+    if (!(teamname in team_times)) {
+      team_times[teamname] = 0;
+    }
+    if (!(teamname in team_scores)) {
+      team_scores[teamname] = new Set();
+    }
+    if (!(teamname in team_ans_time)) {
+      team_ans_time[teamname] = 0;
+    }
+  });
+}
+
+function updateLeaderboard() {
+  teams = []
+  for (let [key, value] of Object.entries(team_scores)) {
+    if (!team_ans_time[key]) team_ans_time[key] = 0;
+    teams.push([key, value.size, team_ans_time[key], Array.from(team_scores[key])])
+  }
+
+  teams.sort( function( a, b )
+  {
+    if ( a[2] == b[2] ) return 0;
+    return a[2] < b[2] ? -1 : 1;
+  });
+  
+  teams.sort( function( a, b )
+  {
+    if ( a[1] == b[1] ) return 0;
+    return a[1] > b[1] ? -1 : 1;
+  });
+
+  leaderboard = teams;
+}
+
+updateTeams().then(() => {
+  updateLeaderboard();
+});
+
+
 var app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -55,6 +105,17 @@ app.get('/', function(req, res){
 
 app.get('/team', function(req, res){
   res.sendFile(path.join(__dirname, 'team.html'));
+})
+
+app.get('/leaderboard', function(req, res){
+  res.sendFile(path.join(__dirname, 'leaderboard.html'));
+})
+
+app.get('/getLeaderboard', function(req, res){
+  if (lastLeaderboard + 60*1000 < Date.now()) {
+    updateLeaderboard();
+  }
+  res.send({lb:leaderboard})
 })
 
 app.get('/puzzle', function(req, res){
@@ -171,7 +232,7 @@ app.post('/createTeam', function(req, res) {
           var userdata = userdoc.data()
           userdata["team"] = req.body.teamname;
           userdata["team_leader"]= true;
-          console.log(userdata)
+          //console.log(userdata)
           db.collection('users').doc(req.body.uid).set(
             userdata
           ).then(ref2 => {
@@ -183,6 +244,7 @@ app.post('/createTeam', function(req, res) {
             });
             team_times[req.body.teamname] = 0;
             team_scores[req.body.teamname] = new Set();
+            team_ans_time[req.body.teamname] = 0;
           })
         }).catch(function(error) {
           // Handle Errors here.
@@ -207,6 +269,14 @@ app.post('/getTeam', function(req, res) {
         res.sendStatus(500);
         return;
       }
+
+      if (!(teamname in team_times) || !(teamname in team_scores)) {
+        team_times[teamname] = 0;
+        team_scores[teamname] = new Set();
+        team_ans_time[req.body.teamname] = 0;
+      }
+
+
       let teamref = db.collection('teams').doc(teamname);
       teamref.get().then(doc => {
         if (doc.exists) {
@@ -296,6 +366,7 @@ app.post('/quitTeam', function(req, res) {
           db.collection('teams').doc(req.body.teamname).delete();
           delete team_scores[req.body.teamname];
           delete team_times[req.body.teamname];
+          delete team_ans_time[req.body.teamname];
           res.sendStatus(200);
         });
       })
@@ -323,12 +394,16 @@ app.post('/quitTeam', function(req, res) {
 app.post('/verifyDone', function(req,res) {
   if (!(req.body.team in team_scores)) {
     team_scores[req.body.team] = new Set();
-    res.sendStatus(500);
+    res.status(400).send({
+      message: 'team not found'
+    });
   } else {
     if (team_scores[req.body.team].has(req.body.num)) {
       res.sendStatus(200);
     } else {
-      res.sendStatus(500);
+      res.status(400).send({
+        message: 'have not completed puzzle'
+      });
     }
   }
 });
@@ -354,6 +429,8 @@ app.post('/verify', function(req,res) {
     if (req.body.team in team_times) {
       if (team_times[req.body.team] + 2000 < now) {
         if (req.body.ans == answers[req.body.num]) {
+          team_times[req.body.team] = now;
+          team_ans_time[req.body.team] = now;
           team_scores[req.body.team].add(req.body.num)
           res.sendStatus(200);
         } else {
@@ -380,6 +457,10 @@ app.post('/verify', function(req,res) {
     team_times[req.body.team] = now;
   }
 })
+
+app.use('*', function(req, res) {
+  return res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
 
 var server = http.createServer(app);
 

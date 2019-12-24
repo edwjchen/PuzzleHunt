@@ -15,7 +15,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     $("#sign-in-opts").show();
   } else {
   	$("#sign-in-opts").hide();
-    $("#menu ul").append(`<li><a href="index" onclick="signout()">Sign Out</a></li>`)
+    $("#menu ul").append(`<li><a href="/" onclick="signout()">Sign Out</a></li>`)
   }
   $('body').removeClass('is-preload');
 });

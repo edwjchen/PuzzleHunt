@@ -7,7 +7,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   } else {
     $(".registered").show()
 	  $("#notregistered").hide()
-    $("#menu ul").append(`<li><a href="index" onclick="signout()">Sign Out</a></li>`)
+    $("#menu ul").append(`<li><a href="/" onclick="signout()">Sign Out</a></li>`)
     getTeam()
   }
 });
@@ -32,25 +32,27 @@ function getTeam() {
 
     let urlParams = new URLSearchParams(window.location.search);
     let num = urlParams.get('num');
-    $.ajax({
-      url: "/verifyDone",
-      type: "POST",
-      data: {
-        team: teamname,
-        num: num,
-      },
-    success: function(data, textStatus, jqXHR) {
-      $("#puzzle-box").hide();
-      $("#puzzle-done").show();
-      $('body').removeClass('is-preload');
+    if (num){
+      $.ajax({
+        url: "/verifyDone",
+        type: "POST",
+        data: {
+          team: teamname,
+          num: num,
+        },
+      success: function(data, textStatus, jqXHR) {
+        $("#puzzle-box").hide();
+        $("#puzzle-done").show();
+        $('body').removeClass('is-preload');
 
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      $("#puzzle-box").show();
-      $("#puzzle-done").hide();
-      $('body').removeClass('is-preload');
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        $("#puzzle-box").show();
+        $("#puzzle-done").hide();
+        $('body').removeClass('is-preload');
+      }
+      });
     }
-    });
 
     $.ajax({
       url: "/verifyAllDone",
