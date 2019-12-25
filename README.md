@@ -43,4 +43,4 @@ See also the list of [contributors](https://github.com/edwjchen/PuzzleHunt/contr
 
 ## Acknowledgments
 
-* HTML5UP for the UI Template!
+* [HTML5UP](https://html5up.net/phantom) for the UI Template!
