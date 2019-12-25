@@ -13,6 +13,7 @@ firebase service account credentials
 
 ### Installing
 
+To run locally:
 ```
 npm init
 npm install 
@@ -21,6 +22,7 @@ npm start
 
 ## Deployment
 
+To deploy: (requires gcloud cli and linked to GCP billing account)
 ```
 gcloud app deploy
 ```
