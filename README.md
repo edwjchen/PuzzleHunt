@@ -13,6 +13,7 @@ firebase service account credentials
 
 ### Installing
 
+To run locally:
 ```
 npm init
 npm install 
@@ -21,6 +22,7 @@ npm start
 
 ## Deployment
 
+To deploy: (requires gcloud cli and linked to GCP billing account)
 ```
 gcloud app deploy
 ```
@@ -41,4 +43,4 @@ See also the list of [contributors](https://github.com/edwjchen/PuzzleHunt/contr
 
 ## Acknowledgments
 
-* HTML5UP for the UI Template!
+* [HTML5UP](https://html5up.net/phantom) for the UI Template!
