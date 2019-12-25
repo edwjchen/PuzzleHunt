@@ -7,6 +7,7 @@ A puzzle hunt application that includes Google Auth user login, team making, ans
 ### Prerequisites
 
 node.js
+
 firebase service account credentials
 
 
