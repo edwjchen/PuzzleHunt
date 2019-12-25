@@ -2,7 +2,7 @@
 
 <img src="images/favi.png">
 
-This is a puzzle hunt application created 
+A puzzle hunt application that includes Google Auth user login, team making, answer verification, puzzle layout, and leaderboard. 
 
 ### Prerequisites
 
