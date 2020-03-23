@@ -131,3 +131,30 @@ function verify() {
   });
   return false;
 }
+
+function runCode(value) {
+  let urlParams = new URLSearchParams(window.location.search);
+  let num = urlParams.get('num');
+  $.ajax({
+    url: "/runcode",
+    type: "POST",
+    data: {
+      team: teamname,
+      num: num,
+      ans: value
+    },
+    success: function(data, textStatus, jqXHR) {
+      let res =  data['message'];
+      if (res === "fast") {
+        $("#output").text("You can only run the code every 2 seconds!");
+      } else {
+        $("#output").text(res);
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      let res =  jqXHR.responseJSON.message;
+      $("#output").text(res);
+    }
+  });
+  return false;
+}

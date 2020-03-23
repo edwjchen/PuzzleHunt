@@ -26,12 +26,23 @@ let answers = {
   '8': 'answer', 
   '9': 'answer', 
   '10': 'answer', 
-  '11': 'answer', 
+  '11': 'konami', 
   '12': 'answer', 
   '13': 'answer', 
   '14': 'answer', 
   '15': 'answer', 
 }
+
+//konami in morse
+let konami = [
+  "\t \t",
+  "\t\t\t",
+  "\t ",
+  " \t",
+  "\t\t",
+  "  "
+]
+
 const admin = require('firebase-admin');
 
 let serviceAccount = require('./credentials.json');
@@ -276,7 +287,6 @@ app.post('/getTeam', function(req, res) {
         team_ans_time[req.body.teamname] = 0;
       }
 
-
       let teamref = db.collection('teams').doc(teamname);
       teamref.get().then(doc => {
         if (doc.exists) {
@@ -449,6 +459,75 @@ app.post('/verify', function(req,res) {
          message: 'wrong'
       });
       team_times[req.body.team] = now;
+    }
+  } else {
+    res.status(400).send({
+      message: 'server error'
+    });
+    team_times[req.body.team] = now;
+  }
+})
+
+app.post('/runcode', function(req,res) {
+  if (!(req.body.team in team_scores)) {
+    team_scores[req.body.team] = new Set();
+  }
+
+  if (req.body.num in nums){
+    let now = Date.now();
+    if (req.body.team in team_times) {
+      if (team_times[req.body.team] + 2000 < now) {
+        let content = req.body.ans.split("\n");
+        console.log(content)
+        for (var i = 3; i < content.length; i++) {
+          if (i-3 < konami.length) {
+            for (var j = 0; j < konami[i-3].length; j++) {
+              if (konami[i-3].charAt(j) != content[i].charAt(j)) {
+                if (konami[i-3].charAt(j) === '\t') {
+                  res.status(200).send({
+                    message: 'TabError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                  });
+                  team_times[req.body.team] = now;
+                  return;
+                } else {
+                  res.status(200).send({
+                    message: 'SpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                  });
+                  team_times[req.body.team] = now;
+                  return;
+                }
+              }
+            }
+          } else {
+            break;
+          }
+        }
+        if (content.length - 3 < konami.length) {
+          let i = content.length - 3
+          if (konami[i].charAt(0) === '\t') {
+            res.status(200).send({
+              message: 'TabError: inconsistent use of tabs and spaces in indentation on line '+(i+4)
+            });
+            team_times[req.body.team] = now;
+            return;
+          } else {
+            res.status(200).send({
+              message: 'SpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+4)
+            });
+            team_times[req.body.team] = now;
+            return;
+          }
+        }
+        res.status(200).send({
+          message: ':thinking:'
+        });
+        team_times[req.body.team] = now;
+        return;
+      } else {
+        res.status(200).send({
+          message: 'fast'
+        });
+      }
     }
   } else {
     res.status(400).send({
