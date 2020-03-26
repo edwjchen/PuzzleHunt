@@ -23,7 +23,7 @@
 				<div class="inner">
 
 					<!-- Logo -->
-					<a href="/" class="logo" onmouseover="onHover();" onmouseout="offHover();">
+					<a href="/puzzle" class="logo" onmouseover="onHover();" onmouseout="offHover();">
 						<span class="symbol"><img id="logo" src="images/logo2.svg" alt=""/></span>
 						<span class="title">TBPuzzle</span>
 					</a>
@@ -73,7 +73,8 @@
 
 						<div class="in-team">
 							<header>
-								<h1>Leet Code</h1>
+								<h1>Leat Code</h1>
+								<p>Puzzle Credits: Owen Shen</p>
 								<ul class="actions">
 									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
 								</ul>
@@ -82,9 +83,9 @@
 							<h2> 1. Two Sum </h2>
 							<h3 style="color: seagreen;  display: inline;">Easy </h3> &emsp;
 							<h3 style="display: inline;"> 
-								<i class="fas fa-thumbs-up"></i> 13967 &emsp;
-								<i class="fas fa-thumbs-down"></i> 511 &emsp;
-								<i class="fas fa-heart"></i> Add to List &emsp;
+								<i id="up" class="fas fa-thumbs-up" onclick="clickUp()"></i> 13967 &emsp;
+								<i id="down" class="fas fa-thumbs-down" onclick="clickDown()"></i> 511 &emsp;
+								<i id="heart" class="fas fa-heart" onclick="clickHeart()"></i> Add to List &emsp;
 								<i class="fas fa-share"></i> Share
 							</h3>
 
@@ -185,6 +186,35 @@ class Solution:
 			editor.session.setUseSoftTabs(false);
 			editor.setShowInvisibles(true);
 			editor.setOptions({ fontSize: "10pt" });
+		</script>
+
+		<script> 
+			function clickUp() {
+				if ($("#up").css("color") == "rgb(255, 255, 255)") {
+					$("#up").css("color", "forestgreen");
+				} else {
+					$("#up").css("color", "rgb(255, 255, 255)");
+				}
+				$("#down").css("color", "rgb(255, 255, 255)");
+			}
+			
+			function clickDown() {
+				if ($("#down").css("color") == "rgb(255, 255, 255)") {
+					$("#down").css("color", "#B2170E");
+				} else {
+					$("#down").css("color", "rgb(255, 255, 255)");
+				}
+				$("#up").css("color", "rgb(255, 255, 255)");
+
+			}
+
+			function clickHeart() {
+				if ($("#heart").css("color") == "rgb(255, 255, 255)") {
+					$("#heart").css("color", "pink");
+				} else {
+					$("#heart").css("color", "rgb(255, 255, 255)");
+				}
+			}
 		</script>
 	</body>
 </html>

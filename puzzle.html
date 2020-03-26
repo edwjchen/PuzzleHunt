@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel='icon' href='images/favi.png' type='image/png'/ >
+		<link rel='icon' href='images/favi.png' type='image/png'/>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload landing">
@@ -64,34 +64,48 @@
 								</ul>
 							</form>
 						</div>
+						<div class="passcode"> 
+							<h2>Your team needs to enter in a secret passcode to proceed!</h2>
+							<form class="passcode-box" method="post" onsubmit="return verifyPasscode()">
+								<div class="fields">
+									<div class="field half">
+										<input type="text" name = "passcode" id="pc" placeholder="Passcode" maxlength="50"></input>
+										<div id="passcode-error" style="color: #f2849e;"></div>
+									</div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Submit" class="primary"/></li>
+								</ul>
+							</form>
+						</div>
 						<div class="in-team">
 							<header>
 								<h1>Welcome to TBPuzzles!</h1>
 								<p>Click on a puzzle to begin! Each puzzle will be a one-word answer. Submissions to the puzzles will be limited to 2 seconds per submission, so use them wisely! On submission, hints will be released if the answer is on the correct track. Best of luck :)</p>
 							</header>
 							<section class="tiles">
-								<article id="1" class="style1">
+								<article id="1">
 									<span class="image">
-										<img src="images/pic01.jpg" alt="" />
+										<img src="images/travellog.jpg" alt="" />
 									</span>
 									<a href="/puzzle?num=1">
-										<h2>Magna</h2>
+										<h2>Travel Log</h2>
 									</a>
 								</article>
-								<article id="2" class="style2">
+								<article id="2">
 									<span class="image">
-										<img src="images/pic02.jpg" alt="" />
+										<img src="images/space.jpg" alt="" />
 									</span>
 									<a href="/puzzle?num=2">
-										<h2>Lorem</h2>
+										<h2>Twists & Turns</h2>
 									</a>
 								</article>
-								<article id="3" class="style3">
+								<article id="3">
 									<span class="image">
-										<img src="images/pic03.jpg" alt="" />
+										<img src="images/who.jpg" alt="" />
 									</span>
 									<a href="/puzzle?num=3">
-										<h2>Feugiat</h2>
+										<h2>Who’s that</h2>
 									</a>
 								</article>
 								<article id="4" class="style4">
@@ -126,12 +140,12 @@
 										<h2>Ipsum</h2>
 									</a>
 								</article>
-								<article id="8" class="style3">
+								<article id="8">
 									<span class="image">
-										<img src="images/pic08.jpg" alt="" />
+										<img src="images/spaceinvaders.jpg" alt="" />
 									</span>
 									<a href="/puzzle?num=8">
-										<h2>Dolor</h2>
+										<h2>Space Invaders</h2>
 									</a>
 								</article>
 								<article id="9" class="style1">
@@ -150,12 +164,12 @@
 										<h2>Ultricies</h2>
 									</a>
 								</article>
-								<article id="11" class="style6">
+								<article id="11">
 									<span class="image">
-										<img src="images/pic11.jpg" alt="" />
+										<img src="images/code.jpg" alt="" />
 									</span>
 									<a href="/puzzle?num=11">
-										<h2>Dictum</h2>
+										<h2>Leat Code</h2>
 									</a>
 								</article>
 								<article id="12" class="style4">

@@ -57,7 +57,6 @@ function getLeaderboard() {
 	    url: "/getLeaderboard",
 	    type: "GET",
 	    success: function(data, textStatus, jqXHR) {
-	      console.log(data.lb)
 	      populateLeaderboard(data.lb)
 	      $('body').removeClass('is-preload');
 	    },
@@ -70,7 +69,6 @@ function getLeaderboard() {
 		    url: "/getLeaderboard",
 		    type: "GET",
 		    success: function(data, textStatus, jqXHR) {
-		      console.log(data.lb)
 		      populateLeaderboard(data.lb)
 		    },
 		    error: function (jqXHR, textStatus, errorThrown) {
@@ -115,7 +113,6 @@ function populateLeaderboard(lb) {
 	  	} 
 	  	count++;
 	  	rank = count+1;
-	  	console.log(count);
 	})
 }
 

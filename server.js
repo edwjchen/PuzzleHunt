@@ -10,15 +10,18 @@ var http = require('http'),
 
 let team_times = {}
 let team_scores = {}
+let team_pass = {}
 let team_ans_time = {}
+let team_data = {}
 let leaderboard = []
 let lastLeaderboard = Date.now()
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
+let passcode = "beta"
 
 let answers = {
-  '1': 'answer', 
-  '2': 'answer', 
-  '3': 'answer', 
+  '1': 'respawn', 
+  '2': 'barrel', 
+  '3': 'dialga', 
   '4': 'answer', 
   '5': 'answer', 
   '6': 'answer', 
@@ -41,6 +44,14 @@ let konami = [
   " \t",
   "\t\t",
   "  "
+]
+
+//space invaders
+let waves = [
+  [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [5,0]],
+  [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [3,0], [4,0], [5,0], [6,0], [7,0]],
+  [[3,4], [3,3], [3,2], [3,1], [3,0], [4,0], [5,0], [6,0], [7,0]],
+  [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [5,0]],
 ]
 
 const admin = require('firebase-admin');
@@ -256,6 +267,7 @@ app.post('/createTeam', function(req, res) {
             team_times[req.body.teamname] = 0;
             team_scores[req.body.teamname] = new Set();
             team_ans_time[req.body.teamname] = 0;
+            team_data[req.body.team] = [0]
           })
         }).catch(function(error) {
           // Handle Errors here.
@@ -320,6 +332,37 @@ app.post('/getTeam', function(req, res) {
     // Handle Errors here.
     console.log(error)
   })
+})
+
+app.post('/passcode', function(req, res) {
+  if (req.body.teamname) {
+    req.body.teamname = req.body.teamname.toLowerCase().trim();
+  }
+  if (req.body.pc) {
+    req.body.pc = req.body.pc.toLowerCase().trim();
+  }
+
+  if (req.body.teamname in team_pass) {
+    res.status(200).send({
+      message: 'good'
+    });
+    return;
+  }
+
+  if (req.body.pc === passcode) {
+    res.status(200).send({
+      message: 'good'
+    });
+    team_pass[req.body.teamname] = true;
+  } else if (!req.body.pc) {
+    res.status(200).send({
+      message: 'no passcode'
+    });
+  } else {
+    res.status(200).send({
+      message: 'bad passcode'
+    });
+  }
 })
 
 app.post('/joinTeam', function(req, res) {
@@ -404,15 +447,17 @@ app.post('/quitTeam', function(req, res) {
 app.post('/verifyDone', function(req,res) {
   if (!(req.body.team in team_scores)) {
     team_scores[req.body.team] = new Set();
-    res.status(400).send({
-      message: 'team not found'
+    res.status(200).send({
+      message: 'team'
     });
   } else {
     if (team_scores[req.body.team].has(req.body.num)) {
-      res.sendStatus(200);
+      res.status(200).send({
+        message: 'good'
+      });
     } else {
-      res.status(400).send({
-        message: 'have not completed puzzle'
+      res.status(200).send({
+        message: 'unfinished'
       });
     }
   }
@@ -421,9 +466,11 @@ app.post('/verifyDone', function(req,res) {
 app.post('/verifyAllDone', function(req,res) {
   if (!(req.body.team in team_scores)) {
     team_scores[req.body.team] = new Set();
-    res.sendStatus(500);
+    res.status(200).send({
+      message: 'team'
+    });
   } else {
-    res.send({done:Array.from(team_scores[req.body.team])})
+    res.status(200).send({done:Array.from(team_scores[req.body.team])})
   }
 });
 
@@ -469,6 +516,10 @@ app.post('/verify', function(req,res) {
 })
 
 app.post('/runcode', function(req,res) {
+  if (!(req.body.team in team_data)) {
+    team_data[req.body.team] = [0,0]
+  }
+
   if (!(req.body.team in team_scores)) {
     team_scores[req.body.team] = new Set();
   }
@@ -478,20 +529,20 @@ app.post('/runcode', function(req,res) {
     if (req.body.team in team_times) {
       if (team_times[req.body.team] + 2000 < now) {
         let content = req.body.ans.split("\n");
-        console.log(content)
         for (var i = 3; i < content.length; i++) {
           if (i-3 < konami.length) {
             for (var j = 0; j < konami[i-3].length; j++) {
               if (konami[i-3].charAt(j) != content[i].charAt(j)) {
+                team_data[req.body.team][0]++
                 if (konami[i-3].charAt(j) === '\t') {
                   res.status(200).send({
-                    message: 'TabError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                    message: team_data[req.body.team][0] + '. MissingTabError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
                   });
                   team_times[req.body.team] = now;
                   return;
                 } else {
                   res.status(200).send({
-                    message: 'SpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                    message: team_data[req.body.team][0] + '. MissingSpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
                   });
                   team_times[req.body.team] = now;
                   return;
@@ -535,6 +586,20 @@ app.post('/runcode', function(req,res) {
     });
     team_times[req.body.team] = now;
   }
+})
+
+app.post('/setupFormation', function(req,res) {
+  if (!(req.body.team in team_data)) {
+    team_data[req.body.team] = [0,0]
+  }
+
+  if (!(req.body.team in team_scores)) {
+    team_scores[req.body.team] = new Set();
+  }
+
+  res.status(200).send({
+    message: waves[parseInt(req.body.wave)-1]
+  });
 })
 
 app.use('*', function(req, res) {

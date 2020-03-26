@@ -21,12 +21,15 @@ function getTeam() {
     },
     success: function(data, textStatus, jqXHR) {
     if (data.team != '') {
-        $(".in-team").show();
         $(".no-team").hide();
         teamname = data.team;
     } else {
         $(".no-team").show();
         $(".in-team").hide();
+    }
+
+    if (data.team) {
+      verifyPasscode()
     }
 
 
@@ -41,15 +44,19 @@ function getTeam() {
           num: num,
         },
       success: function(data, textStatus, jqXHR) {
-        $("#puzzle-box").hide();
-        $("#puzzle-done").show();
-        $('body').removeClass('is-preload');
-
+        if (data.message == "done") {
+          $("#puzzle-box").hide();
+          $("#puzzle-done").show();
+          $('body').removeClass('is-preload');
+        }
+        else {
+          $("#puzzle-box").show();
+          $("#puzzle-done").hide();
+          $('body').removeClass('is-preload');
+        }
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        $("#puzzle-box").show();
-        $("#puzzle-done").hide();
-        $('body').removeClass('is-preload');
+        
       }
       });
     }
@@ -61,17 +68,21 @@ function getTeam() {
         team: teamname
       },
     success: function(data, textStatus, jqXHR) {
-      let arr = data.done;
-      arr.forEach(id => {
-        $("#"+id).removeClass();
-        $("#"+id).addClass("style0");
-        $("#"+id).children('a').children('h2').text("Solved")
-      })
-      $('body').removeClass('is-preload');
+      if (data.done != null) {
+        let arr = data.done;
+        arr.forEach(id => {
+          $("#"+id).removeClass();
+          $("#"+id).addClass("style0");
+          $("#"+id).children('a').children('h2').text("Solved")
+        })
+        $('body').removeClass('is-preload');
+      } else {
+        $('body').removeClass('is-preload');
+      }
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      $('body').removeClass('is-preload');
+
     }
     });
   },
@@ -81,6 +92,38 @@ function getTeam() {
     $('body').removeClass('is-preload');
   }
   });
+}
+
+function verifyPasscode() {
+  $("#passcode-error").text("");
+  
+  $.ajax({
+    url: "/passcode",
+    type: "POST",
+    data: {
+      team: teamname,
+      pc: $("#pc").val()
+    },
+    success: function(data, textStatus, jqXHR) {
+      if (data.message == "good") {
+        $(".passcode").hide();
+        $(".in-team").show();
+      } else {
+        $(".in-team").hide();
+        if (window.location.pathname == "/puzzle" && window.location.search.includes("num")) {
+          $("#passcode-error").text("Wrong Passcode");
+          window.location.href = window.location.origin + "/puzzle"
+        } else if (data.message == "bad passcode") {
+          $("#passcode-error").text("Wrong Passcode");
+        }
+      }
+      return false;
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+    
+    }
+  });
+  return false;
 }
 
 function onHover()
@@ -157,4 +200,25 @@ function runCode(value) {
     }
   });
   return false;
+}
+
+async function setupFormation(wave) {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "/setupFormation",
+      type: "POST",
+      data: {
+        team: teamname,
+        wave: wave
+      },
+      success: function(data, textStatus, jqXHR) {
+        let res =  data['message'];
+        console.log(res);
+        resolve(res);
+      },
+      error: function (response) {
+        reject(response)
+      }
+    });
+  })
 }

@@ -24,3 +24,27 @@
     border-bottom: 1px solid lightgray;
     margin-bottom: 1em;
 }
+
+.page {
+    padding-top: 2em;
+    padding-right: 2em;
+    padding-left: 2em;
+
+}
+
+:root {
+    --grid-cols: 16;
+    --grid-rows: 16;
+}
+
+#game {
+    display: grid;
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+}
+
+.grid-item {
+    padding: 2em;
+    border: 1px solid #ddd;
+    text-align: center;
+}

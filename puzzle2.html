@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel='icon' href='images/favi.png' type='image/png'/ >
+		<link rel='icon' href='images/favi.png' type='image/png'/>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload landing">
@@ -17,7 +17,7 @@
 				<div class="inner">
 
 					<!-- Logo -->
-					<a href="/" class="logo" onmouseover="onHover();" onmouseout="offHover();">
+					<a href="/puzzle" class="logo" onmouseover="onHover();" onmouseout="offHover();">
 						<span class="symbol"><img id="logo" src="images/logo2.svg" alt=""/></span>
 						<span class="title">TBPuzzle</span>
 					</a>
@@ -66,12 +66,44 @@
 						</div>
 						<div class="in-team">
 							<header>
-								<h1>Puzzle 2</h1>
+								<h1>Twists & Turns</h1>
 								<ul class="actions">
 									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
 								</ul>
 							</header>
-							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
+
+							<h3>Word Bank:</h3>
+							<div>
+								<table>
+									<thead>
+										<tr>
+											<th>Okami</th>
+											<th>Shield</th>
+											<th>Nintendo</th>
+											<th>Andross</th>
+											<th>Mccloud</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>Sixtyfour</th>
+											<th>Starfox</th>
+											<th>Wolf</th>
+											<th>Falco</th>
+											<th>Starlink</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+
+							<h2 class="in-team"></h2>
+								<table>
+									<tbody id="board">
+									</tbody>
+								</table>
+							</div>
+
+
 							<form id="puzzle-box" method="post" onsubmit="return verify()">
 								<div class="fields">
 									<div class="field half">
@@ -117,5 +149,6 @@
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/puzzle.js"></script>
+		<script src="assets/js/twistsandturns.js"></script>
 	</body>
 </html>

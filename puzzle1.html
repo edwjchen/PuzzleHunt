@@ -5,8 +5,16 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel='icon' href='images/favi.png' type='image/png'/ >
+		<link rel="stylesheet" href="assets/css/puzzle.css" />
+		<link rel='icon' href='images/favi.png' type='image/png'/>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style type="text/css">
+			#travellog{
+				width: 1002px;
+				height: 773px;
+				background-repeat: no-repeat;
+			}
+		</style>
 	</head>
 	<body class="is-preload landing">
 		<!-- Wrapper -->
@@ -17,7 +25,7 @@
 				<div class="inner">
 
 					<!-- Logo -->
-					<a href="/" class="logo" onmouseover="onHover();" onmouseout="offHover();">
+					<a href="/puzzle" class="logo" onmouseover="onHover();" onmouseout="offHover();">
 						<span class="symbol"><img id="logo" src="images/logo2.svg" alt=""/></span>
 						<span class="title">TBPuzzle</span>
 					</a>
@@ -66,12 +74,71 @@
 						</div>
 						<div class="in-team">
 							<header>
-								<h1>Puzzle 1</h1>
+								<h1>Travel Log</h1>
 								<ul class="actions">
 									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
 								</ul>
 							</header>
-							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
+
+							<h3>Use your left and right arrow keys to read!</h3>
+
+							<div id="travellog">
+								<div style="background: url(images/cover.jpg); background-size: cover; font-size: 26px; font-weight: bold;">
+									<div class="page">
+										My Travel Log <br><br><br><br><br><br><br><br><br><br><br><br>
+										&emsp;&emsp; by: a young adventurer
+									</div>
+								</div>
+								<div style="background: url(images/pic03.jpg); background-size: cover;"></div>
+								<div style="background: url(images/pic07.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 10/8/2009</h2> 
+										It is October 8th of 2009 and I set off to this newly found location. The atmosphere felt legendary. As I cut through the jungle, I almost got burnt by a dragon but the water, wind, and earth dragons were nice. As I was leaving, I befriended a crab and met many different people with different lores. 
+
+									</div>
+								</div>
+								<div style="background: url(images/pic08.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 11/8/2001</h2> 
+										It is November 8th of 2001 and I set off to this newly found location. The atmosphere felt like it was coming to an end. As I traversed through the flat terrain, I almost got beat up in hand to hand combat, but barely managed not to get grabbed. As I was leaving, I befriended a pink lady and her pet dinosaur frog. 
+									</div>
+								</div>
+								<div style="background: url(images/pic10.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 11/3/2009</h2> 
+										It is November 3rd of 2009 and I set off to this newly found location. The atmosphere felt metallic. As I crawled through the sand, I almost got scammed for buying overpriced soap, but I ended up buying some strawberry jelly instead. As I was leaving, I had to fight a shepherd but not over sheep. 
+									</div>
+								</div>
+								<div style="background: url(images/pic01.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 4/1/2003</h2> 
+										It is April 1st of 2003 and I set off to this newly found location. The atmosphere felt like syrup. As I climbed up barren mountains, I almost became a warrior, but I forgot to dance with an evil spirit. As I was leaving, I picked up some orange colored mushrooms and sticks from stumps. 
+
+									</div>
+								</div>
+								<div style="background: url(images/pic02.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 8/2/1992</h2> 
+										It is August 2nd of 1992 and I set off to this newly found location. The atmosphere smelled of petrichor. As I hopped into my car, I almost fell, but a cloud helped bring me back on course. As I was leaving, I enjoyed the spacious view and multitude of colors. 
+									</div>
+								</div>
+								<div style="background: url(images/pic11.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 11/7/2010</h2> 
+										It is November 7th of 2010 and I set off to this newly found location. The atmosphere was very explosive. As I ran out of the house I was staying at, I almost got hit by a bus, but I was dressed in all black so I guess it makes sense. As I was leaving, I enjoyed the small city vibe and the mirrored buildings. 
+									</div>
+								</div>
+								<div style="background: url(images/pic09.jpg); background-size: cover;">
+									<div class="page">
+										<h2>New entry: 2/5/1996</h2> 
+										It is February 5th of 1996 and I set off to this newly found location. The atmosphere was very flowery. As I walked around town, I almost fainted from seeing a ghost, but it was just the mix of a gas leak and some eerie background music. As I was leaving, I enjoyed playing with the animals hidden in the tall grass. 
+									</div>
+								</div>
+								<div style="background: url(images/pic05.jpg); background-size: cover;"></div>
+								<div style="background: url(images/pic12.jpg); background-size: cover;"></div>
+							</div>
+							<br>
+							<br>
 							<form id="puzzle-box" method="post" onsubmit="return verify()">
 								<div class="fields">
 									<div class="field half">
@@ -117,5 +184,16 @@
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/puzzle.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+
+		<script type="text/javascript">
+			$('#travellog').turn({gradients: true, acceleration:true})
+			$(window).bind('keydown', function(e){
+				if (e.keyCode==37)
+					$('#travellog').turn('previous');
+				else if (e.keyCode==39)
+					$('#travellog').turn('next');
+			});
+		</script>
 	</body>
 </html>
