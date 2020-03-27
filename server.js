@@ -13,6 +13,7 @@ let team_scores = {}
 let team_pass = {}
 let team_ans_time = {}
 let team_data = {}
+let team_boards = {}
 let leaderboard = []
 let lastLeaderboard = Date.now()
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
@@ -26,7 +27,7 @@ let answers = {
   '5': 'answer', 
   '6': 'answer', 
   '7': 'answer', 
-  '8': 'answer', 
+  '8': 'tilt', 
   '9': 'answer', 
   '10': 'answer', 
   '11': 'konami', 
@@ -49,9 +50,20 @@ let konami = [
 //space invaders
 let waves = [
   [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [5,0]],
-  [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [3,0], [4,0], [5,0], [6,0], [7,0]],
-  [[3,4], [3,3], [3,2], [3,1], [3,0], [4,0], [5,0], [6,0], [7,0]],
-  [[3,4], [4,4], [5,4], [6,4], [7,4], [5,3], [5,2], [5,1], [5,0]],
+  [[0,4], [1,4], [2,4], [3,4], [4,4], [2,3], [2,2], [2,1], [0,0], [1,0], [2,0], [3,0], [4,0]],
+  [[0,4], [0,3], [0,2], [0,1], [0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0], [7,0], [8,0], [9,0], [10,0], [11,0]],
+  [[3,4], [5,4], [7,4], [9,4], [11,4], [7,3], [7,2], [7,1], [7,0]],
+]
+
+let win_conditions = [
+  [[2,2], [3,2], [4,2]],
+  [[2,3], [3,3], [4,3]],
+  [[2,4], [3,4], [4,4]],
+  [[2,2], [2,3], [2,4]],
+  [[3,2], [3,3], [3,4]],
+  [[4,2], [4,3], [4,4]],
+  [[2,2], [3,3], [4,4]],
+  [[4,2], [3,3], [2,4]]
 ]
 
 const admin = require('firebase-admin');
@@ -267,7 +279,7 @@ app.post('/createTeam', function(req, res) {
             team_times[req.body.teamname] = 0;
             team_scores[req.body.teamname] = new Set();
             team_ans_time[req.body.teamname] = 0;
-            team_data[req.body.team] = [0]
+            team_data[req.body.team] = [0,0,0]
           })
         }).catch(function(error) {
           // Handle Errors here.
@@ -517,7 +529,7 @@ app.post('/verify', function(req,res) {
 
 app.post('/runcode', function(req,res) {
   if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0]
+    team_data[req.body.team] = [0,0,0]
   }
 
   if (!(req.body.team in team_scores)) {
@@ -590,15 +602,273 @@ app.post('/runcode', function(req,res) {
 
 app.post('/setupFormation', function(req,res) {
   if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0]
-  }
-
-  if (!(req.body.team in team_scores)) {
-    team_scores[req.body.team] = new Set();
+    team_data[req.body.team] = [0,0,0]
   }
 
   res.status(200).send({
     message: waves[parseInt(req.body.wave)-1]
+  });
+})
+
+function checkWin(board) {
+  for (var r = 0; r < board.length; r++) {
+    for (var c = 0; c < board.length; c++) {
+      if (r <= board.length - 3) {
+        let test = board[r][c] + board[r+1][c] +board[r+2][c]
+        if (test == 3) {
+          return 1;
+        } else if (test == 15) {
+          return 5;
+        }
+      }
+
+      if (c <= board.length - 3) {
+        let test = board[r][c] + board[r][c+1] +board[r][c+2]
+        if (test == 3) {
+          return 1;
+        } else if (test == 15) {
+          return 5;
+        }
+      }
+
+      if (r <= board.length - 3 && c <= board.length - 3) {
+        let test = board[r][c] + board[r+1][c+1] +board[r+2][c+2]
+        if (test == 3) {
+          return 1;
+        } else if (test == 15) {
+          return 5;
+        }
+      }
+
+      if (r >= 2 && c >= 2) {
+        let test = board[r][c-2] + board[r-1][c-1] +board[r-2][c]
+        if (test == 3) {
+          return 1;
+        } else if (test == 15) {
+          return 5;
+        }
+      }
+    }
+  }
+  return 0
+}
+
+function checkDraw(board) {
+  for (var r = 2; r <= 4; r++) {
+    for (var c = 2; c <= 4; c++) {
+      if (!board[r][c]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function botMove(board) {
+  if (board[3][3] == 0) {
+    board[3][3] = 5;
+    return;
+  } else {
+    //check 8 conditions and block 
+    arr = [0,0,0,0,0,0,0,0] //lc, mc, rc, tr, mr, br, ld, rd
+    arr[0] += board[2][2] + board[3][2] + board[4][2]
+    arr[1] += board[2][3] + board[3][3] + board[4][3]
+    arr[2] += board[2][4] + board[3][4] + board[4][4]
+    arr[3] += board[2][2] + board[2][3] + board[2][4]
+    arr[4] += board[3][2] + board[3][3] + board[3][4]
+    arr[5] += board[4][2] + board[4][3] + board[4][4]
+    arr[6] += board[2][2] + board[3][3] + board[4][4]
+    arr[7] += board[4][2] + board[3][3] + board[2][4]
+
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] == 2 || arr[i] == 10) {
+        //block or win
+        let positions = win_conditions[i];
+        for (var x = 0; x < positions.length; x++) {
+          let row = positions[x][0];
+          let col = positions[x][1];
+          if (board[row][col] == 0) {
+            board[row][col] = 5
+            return;
+          }
+        }
+      }
+    }
+
+    var diag_trick = false;
+    for (var i = 0; i < arr.length; i++){
+      if (board[3][3] == 5 && arr[i] == 7) {
+        diag_trick = true;
+        break;
+      }
+    }
+    if (diag_trick) {
+      if (!board[2][3]) {
+        board[2][3] = 5;
+        return
+      } else if (!board[3][2]) {
+        board[3][2] = 5;
+        return
+      } else if (!board[3][4]) {
+        board[3][4] = 5;
+        return
+      } else if (!board[4][3]) {
+        board[4][3] = 5;
+        return
+      } else {
+        for (var r = 2; r <= 4; r++) {
+          for (var c = 2; c <= 4; c++) {
+            if (!board[r][c]) {
+              board[r][c] = 5;
+              return
+            }
+          }
+        }
+      }
+    } else {
+      //place in corner 
+      if (!board[2][2]) {
+        board[2][2] = 5;
+        return
+      } else if (!board[2][4]) {
+        board[2][4] = 5;
+        return
+      } else if (!board[4][2]) {
+        board[4][2] = 5;
+        return
+      } else if (!board[4][4]) {
+        board[4][4] = 5;
+        return
+      } else {
+        for (var r = 2; r <= 4; r++) {
+          for (var c = 2; c <= 4; c++) {
+            if (!board[r][c]) {
+              board[r][c] = 5;
+              return
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+app.post('/tictactoe', function(req,res) {
+  if (!(req.body.team in team_boards)) {
+    team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+  }
+
+  if (!(req.body.team in team_data)) {
+    team_data[req.body.team] = [0,0,0]
+  }
+
+  if ( team_data[req.body.team][2] == -1) {
+    res.status(200).send({message: 'game over'})
+    return;
+  }
+
+  if (team_data[req.body.team][2] == 0) {
+    //restrict first move to be in squares
+    if (req.body.x >= 2 && req.body.x <= 4 && req.body.y >= 2 && req.body.y <= 4) {
+      team_boards[req.body.team][req.body.y][req.body.x] = 1;
+      team_data[req.body.team][2]++
+
+      botMove(team_boards[req.body.team]);
+
+      res.status(200).send({
+        board: team_boards[req.body.team]
+      });
+    } else {
+      res.status(200).send({
+        message: 'invalid move'
+      });
+    }
+  } else if (team_data[req.body.team][2] == 1) {
+    if (req.body.x >= 1 && req.body.x <= 5 && req.body.y >= 1 && req.body.y <= 5 && team_boards[req.body.team][req.body.y][req.body.x] == 0) {
+      team_boards[req.body.team][req.body.y][req.body.x] = 1;
+      team_data[req.body.team][2]++
+
+      botMove(team_boards[req.body.team]);
+
+      res.status(200).send({
+        board: team_boards[req.body.team]
+      });
+    } else {
+      res.status(200).send({
+        message: 'invalid move'
+      });
+    }
+  } else {
+    if (team_boards[req.body.team][req.body.y][req.body.x] == 0) {
+      team_boards[req.body.team][req.body.y][req.body.x] = 1;
+      team_data[req.body.team][2]++
+
+      let result = checkWin(team_boards[req.body.team])
+      if (result) {
+        team_data[req.body.team][2] = -1
+        res.status(200).send({
+          message: 'player win',
+          board: team_boards[req.body.team]
+        });
+        return 
+      }
+      botMove(team_boards[req.body.team]);
+      result = checkWin(team_boards[req.body.team])
+
+      if (result) {
+        team_data[req.body.team][2] = -1
+        res.status(200).send({
+          message: 'computer win',
+          board: team_boards[req.body.team]
+        });
+        return 
+      }
+
+      result = checkDraw(team_boards[req.body.team])
+      if (result) {
+        team_data[req.body.team][2] = -1
+        res.status(200).send({
+          message: 'draw',
+          board: team_boards[req.body.team]
+        });
+        return;
+      }
+
+      res.status(200).send({
+        board: team_boards[req.body.team]
+      });
+    } else {
+      res.status(200).send({
+        message: 'invalid move'
+      });
+    }
+  }
+})
+
+app.post('/resetBoard', function(req,res) {
+  team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+
+  if (!(req.body.team in team_data)) {
+    team_data[req.body.team] = [0,0,0]
+  } else {
+    team_data[req.body.team][2] = 0
+  }
+
+  res.status(200).send({});
+})
+
+
+app.post('/getBoard', function(req,res) {
+  if (!(req.body.team in team_boards)) {
+    team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+  }
+
+  if (!(req.body.team in team_data)) {
+    team_data[req.body.team] = [0,0,0]
+  } 
+
+  res.status(200).send({
+    board: team_boards[req.body.team]
   });
 })
 

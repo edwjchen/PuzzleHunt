@@ -222,3 +222,80 @@ async function setupFormation(wave) {
     });
   })
 }
+
+async function makeMove(pos) {
+  var x = Math.floor(pos.x/100);
+  var y = Math.floor(pos.y/100);
+
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      url: "/tictactoe",
+      type: "POST",
+      data: {
+        team: teamname,
+        x: x,
+        y: y
+      },
+      success: function(data, textStatus, jqXHR) {
+        if (data.board){
+          resolve(data);
+        } else {
+          resolve("bad move");
+        }
+      },
+      error: function (response) {
+        reject(response)
+      }
+    });
+  })
+}
+
+function resetBoard(pos) {
+  $.ajax({
+    url: "/resetBoard",
+    type: "POST",
+    data: {
+      team: teamname,
+    },
+    success: function(data, textStatus, jqXHR) {
+    
+    },
+    error: function (response) {
+      
+    }
+  });
+}
+
+async function getBoard() {
+  return new Promise((resolve, reject) => {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        reject("no user")
+      }
+      $.ajax({
+        url: "/getTeam",
+        type: "POST",
+        data: {
+          uid: firebase.auth().currentUser.uid,
+        },
+        success: function(data, textStatus, jqXHR) {
+          if (data.team) {
+            $.ajax({
+              url: "/getBoard",
+              type: "POST",
+              data: {
+                team: teamname,
+              },
+              success: function(data, textStatus, jqXHR) {
+                resolve(data.board)
+              },
+              error: function (response) {
+                reject('team not found')
+              }
+            });
+          }
+        }
+      })
+    })
+  })
+}

@@ -179,8 +179,12 @@
   var alienDirection = -1;
   var alienYDown = 0;
   var alienCount = 0;
+  var numAliens = 0;
   var wave = 1;
-  var hasGameStarted = false;
+  var hasGameStarted = false;  
+  var hasGamePaused = true;
+  var gameOver = false;
+
   
   
   
@@ -364,19 +368,20 @@
       
       if (this.stepAccumulator >= this.stepDelay) {
         if (this.position.x < this.bounds.w/2 + 20 && alienDirection < 0) {
-        updateAlienLogic = true;
-      } if (alienDirection === 1 && this.position.x > CANVAS_WIDTH - this.bounds.w/2 - 20) {
-        updateAlienLogic = true;
-      }
+            updateAlienLogic = true;
+        } 
+        if (alienDirection === 1 && this.position.x > CANVAS_WIDTH - this.bounds.w/2 - 20) {
+            updateAlienLogic = true;
+        }
         if (this.position.y > CANVAS_WIDTH - 50) {
           reset();
         }
         
-        var fireTest = Math.floor(Math.random() * (this.stepDelay*25 + 1));
-        if (getRandomArbitrary(0, 1000) <= 5 * (this.stepDelay*25 + 1)) {
+        var fireTest = Math.floor(Math.random() * (this.stepDelay*25*(numAliens-alienCount)/3 + 1));
+        if (getRandomArbitrary(0, 1000) <= 5 * (this.stepDelay*25*(numAliens-alienCount)/3 + 1)) {
           this.doShoot = true;
         }
-        this.position.x += 10 * alienDirection;
+        //this.position.x += 10 * alienDirection;
         this.toggleFrame();
         this.stepAccumulator = 0;
       }
@@ -390,7 +395,7 @@
     },
     
     draw: function(resized) {
-      //this._super(resized);
+      //this._super(resized); //back here
       if (this.bullet !== null && this.bullet.alive) {
         this.bullet.draw(resized);
       }
@@ -512,6 +517,7 @@
   async function setupAlienFormation(wave) {
     alienCount = 0;
     let response = await setupFormation(wave)
+    numAliens = response.length
     for (var i = 0; i < response.length; i++) {
         var gridX = response[i][0];
         var gridY = response[i][1];
@@ -574,9 +580,11 @@
         alien = null;
         alienCount--;
         if (alienCount < 1) {
+          hasGamePaused = true;
           wave++;
           if (wave > 4) {
             hasGameStarted = false;
+            gameOver = true;
             wave=1;
           }
           setupAlienFormation(wave);
@@ -607,12 +615,13 @@
         var alien = aliens[j];
         if (checkRectCollision(bullet.bounds, alien.bounds)) {
           alien.alive = bullet.alive = false;
-          particleManager.createExplosion(alien.position.x, alien.position.y, 'white', 70, 5,5,3,.15,50);
+          if (aliens.length > 1) {
+            particleManager.createExplosion(alien.position.x, alien.position.y, 'white', 70, 5,5,3,.15,50);
+          }
           player.score += 25;
         }
       }
     }
-    return false;
   }
   
   function resolveBulletPlayerCollisions() {
@@ -635,7 +644,7 @@
   
   function resolveCollisions() {
     resolveBulletPlayerCollisions();
-    return resolveBulletEnemyCollisions();
+    resolveBulletEnemyCollisions();
   }
   
   function updateGame(dt) {
@@ -643,10 +652,7 @@
     prevKeyStates = keyStates.slice();
     player.update(dt);
     updateAliens(dt);
-    let res = resolveCollisions();
-    if (res) {
-
-    }
+    resolveCollisions();
   }
   
   function drawIntoCanvas(width, height, drawFunc) {
@@ -705,6 +711,16 @@
     fillCenteredText("Space Inv-aders", CANVAS_WIDTH/2, CANVAS_HEIGHT/2.75, '#FFFFFF', 36);
     fillBlinkingText("Press enter to play!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 500, '#FFFFFF', 36);
   }
+
+  function drawWaveScreen() {
+    fillCenteredText("Starting Wave: "+wave, CANVAS_WIDTH/2, CANVAS_HEIGHT/2.75, '#FFFFFF', 36);
+    fillBlinkingText("Press enter to continue!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 500, '#FFFFFF', 36);
+  }
+
+  function drawOverScreen() {
+    fillCenteredText("Game over!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2.75, '#FFFFFF', 36);
+    fillBlinkingText("Press enter play again!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 500, '#FFFFFF', 36);
+  }
   
   function animate() {
     var now = window.performance.now();
@@ -713,19 +729,37 @@
     if (wasKeyPressed(13) && !hasGameStarted) {
       initGame();
       hasGameStarted = true;
+      gameOver = false;
+    }
+
+    if (wasKeyPressed(13) && hasGamePaused && hasGameStarted) {
+        hasGamePaused = false;
     }
     
     if (hasGameStarted) {
        updateGame(dt / 1000);  
     }
+
+    if (wasKeyPressed(13) && gameOver) {
+        gameOver = false;
+    }
   
    
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    
     if (hasGameStarted) {
-      drawGame(false);
-    } else {
-      drawStartScreen();
+        if (hasGamePaused) {
+            drawWaveScreen();
+        } else {
+            drawGame(false);
+        }
+    }  else {
+        if (gameOver) {
+            drawOverScreen();
+        } else {
+            drawStartScreen();
+        }
     }
     lastTime = now;
     requestAnimationFrame(animate);
@@ -757,14 +791,14 @@
   }
   
   function onKeyDown(e) {
-    if (e.keyCode == 32) {
+    if (e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40) {
         e.preventDefault();
     }
     keyStates[e.keyCode] = true;
   }
   
   function onKeyUp(e) {
-    if (e.keyCode == 32) {
+    if (e.keyCode == 32 || e.keyCode == 38 || e.keyCode == 40) {
         e.preventDefault();
     }
     keyStates[e.keyCode] = false;
