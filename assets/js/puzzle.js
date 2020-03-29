@@ -158,18 +158,19 @@ function verify() {
       ans: $("#answer").val()
     },
     success: function(data, textStatus, jqXHR) {
-      $("#puzzle-box").hide();
-      $("#puzzle-done").show();
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      let res =  jqXHR.responseJSON.message;
+      let res =  data.message;
       if (res == "wrong") {
         $("#answer-error").text("*Wrong answer");
       } else if (res == "fast") {
         $("#answer-error").text("*Please wait before submitting again");
       } else {
-        $("#answer-error").text("*Server error");
+        $("#puzzle-box").hide();
+        $("#puzzle-done").show();
       }
+     
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      $("#answer-error").text("*Server error");
     }
   });
   return false;

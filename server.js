@@ -25,10 +25,10 @@ let answers = {
   '3': 'dialga', 
   '4': 'answer', 
   '5': 'answer', 
-  '6': 'answer', 
+  '6': 'outside', 
   '7': 'answer', 
   '8': 'tilt', 
-  '9': 'answer', 
+  '9': 'ragequit', 
   '10': 'answer', 
   '11': 'konami', 
   '12': 'answer', 
@@ -503,18 +503,18 @@ app.post('/verify', function(req,res) {
           team_scores[req.body.team].add(req.body.num)
           res.sendStatus(200);
         } else {
-          res.status(400).send({
+          res.status(200).send({
              message: 'wrong'
           });
           team_times[req.body.team] = now;
         }
       } else {
-        res.status(400).send({
+        res.status(200).send({
           message: 'fast'
         });
       }
     } else {
-      res.status(400).send({
+      res.status(200).send({
          message: 'wrong'
       });
       team_times[req.body.team] = now;
@@ -783,23 +783,25 @@ app.post('/tictactoe', function(req,res) {
         message: 'invalid move'
       });
     }
-  } else if (team_data[req.body.team][2] == 1) {
+  } 
+  // else if (team_data[req.body.team][2] == 1) {
+  //   if (req.body.x >= 1 && req.body.x <= 5 && req.body.y >= 1 && req.body.y <= 5 && team_boards[req.body.team][req.body.y][req.body.x] == 0) {
+  //     team_boards[req.body.team][req.body.y][req.body.x] = 1;
+  //     team_data[req.body.team][2]++
+
+  //     botMove(team_boards[req.body.team]);
+
+  //     res.status(200).send({
+  //       board: team_boards[req.body.team]
+  //     });
+  //   } else {
+  //     res.status(200).send({
+  //       message: 'invalid move'
+  //     });
+  //   }
+  // } 
+  else {
     if (req.body.x >= 1 && req.body.x <= 5 && req.body.y >= 1 && req.body.y <= 5 && team_boards[req.body.team][req.body.y][req.body.x] == 0) {
-      team_boards[req.body.team][req.body.y][req.body.x] = 1;
-      team_data[req.body.team][2]++
-
-      botMove(team_boards[req.body.team]);
-
-      res.status(200).send({
-        board: team_boards[req.body.team]
-      });
-    } else {
-      res.status(200).send({
-        message: 'invalid move'
-      });
-    }
-  } else {
-    if (team_boards[req.body.team][req.body.y][req.body.x] == 0) {
       team_boards[req.body.team][req.body.y][req.body.x] = 1;
       team_data[req.body.team][2]++
 
@@ -808,7 +810,8 @@ app.post('/tictactoe', function(req,res) {
         team_data[req.body.team][2] = -1
         res.status(200).send({
           message: 'player win',
-          board: team_boards[req.body.team]
+          board: team_boards[req.body.team],
+          secret: "think _______ title"
         });
         return 
       }

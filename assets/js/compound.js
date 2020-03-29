@@ -1,0 +1,27 @@
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+ctx.font = "16px Courier New";
+ctx.fillStyle = "#FFFFFF";
+
+ctx.fillText("4", 500, 200);
+ctx.fillText("2", 275, 100);
+ctx.fillText("1", 150, 200);
+ctx.fillText("3", 200, 20);
+ctx.fillText("2", 180, 150);
+ctx.fillText("4", 350, 200);
+ctx.fillText("5", 375, 250);
+ctx.fillText("1", 100, 350);
+ctx.fillText("2", 170, 320);
+ctx.fillText("3", 150, 450);
+ctx.fillText("2", 250, 425);
+ctx.fillText("1", 400, 435);
+ctx.fillText("3", 250, 50);
+ctx.fillText("5", 400, 75);
+ctx.fillText("9", 500, 325);
+ctx.fillText("9", 400, 335);
+ctx.fillText("9", 50, 100);
+ctx.fillText("5", 475, 400);
+ctx.fillText("1", 170, 253);
+ctx.fillText("2", 415, 140);
+ctx.fillText("3", 300, 378);
+ctx.fillText("1", 240, 350);

@@ -772,8 +772,8 @@
   //
   // ###################################################################
   function resize() {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
+    var w = window.innerWidth - 150;
+    var h = window.innerHeight - 150;
   
       // calculate the scale factor to keep a correct aspect ratio
     var scaleFactor = Math.min(w / CANVAS_WIDTH, h / CANVAS_HEIGHT);

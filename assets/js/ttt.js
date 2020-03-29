@@ -58,15 +58,24 @@ canvas.addEventListener('click', function(e) {
 
 async function clicked(pos) {
     let response = await makeMove(pos);
-    if (response == "bad move"){
+    if (response.message) {
+        if (response.board){
+            if (response.message == "player win") {
+                update(response.board)
+                drawWinningLine(response.board)
+                $("#question").text(response.secret)
+            } else if (response.message == "computer win"){
+                update(response.board)
+                drawWinningLine(response.board)
+            } else if (response.message == "draw") {
+                update(response.board)
+            }
+        }
         hasClicked = false;
     } else {
-        if (response.message) {
-            if (response.message == "player win") {
-
-            } else if (response.message == "computer win")
+        if (response.board) {
+            update(response.board)
         }
-        update(response)
         hasClicked = false;
     }
 }
@@ -78,33 +87,100 @@ function update(board) {
                 if (board[r][c] == 1) {
                     if (marked[r-2][c-2] == 0) {
                         marked[r-2][c-2] = 1
+                        ctx.beginPath(); 
                         ctx.moveTo(c * 100 + 20, r * 100 + 20);
                         ctx.lineTo(c * 100 + 80, r * 100 + 80);
+                        ctx.strokeStyle = 'rgb(255,255,255)';
                         ctx.stroke()
                         ctx.moveTo(c * 100 + 80, r * 100 + 20);
                         ctx.lineTo(c * 100 + 20, r * 100 + 80);
+                        ctx.strokeStyle = 'rgb(255,255,255)';
                         ctx.stroke()
                     }
                 } else if (board[r][c] == 5) {
                     if (marked[r-2][c-2] == 0) {
                         marked[r-2][c-2] = 1
+                        ctx.beginPath(); 
                         ctx.moveTo(c*100 + 90, r * 100 + 50);
                         ctx.arc(c*100 + 50, r*100+50, 40, 0, 2* Math.PI)
+                        ctx.strokeStyle = 'rgb(255,255,255)';
                         ctx.stroke()
                     }
                 }
             } else {
                 if (board[r][c] == 1) {
+                    ctx.beginPath(); 
                     ctx.moveTo(c * 100 + 20, r * 100 + 20);
                     ctx.lineTo(c * 100 + 80, r * 100 + 80);
+                    ctx.strokeStyle = 'rgb(255,255,255)';
                     ctx.stroke()
                     ctx.moveTo(c * 100 + 80, r * 100 + 20);
                     ctx.lineTo(c * 100 + 20, r * 100 + 80);
+                    ctx.strokeStyle = 'rgb(255,255,255)';
                     ctx.stroke()
                 }
             }
         }
     }
+}
+
+function drawWinningLine(board) {
+    for (var r = 0; r < board.length; r++) {
+        for (var c = 0; c < board.length; c++) {
+            if (r <= board.length - 3) {
+                let test = board[r][c] + board[r+1][c] +board[r+2][c]
+                if (test == 3 || test == 15) {
+                    ctx.beginPath(); 
+                    ctx.moveTo(c * 100 + 50, r * 100 + 20);
+                    ctx.lineTo(c * 100 + 50, (r+2) * 100 + 80);
+                    ctx.strokeStyle = '#f2849e';
+                    ctx.lineWidth = 5;
+                    ctx.stroke()
+                    return;
+                }
+            }
+
+            if (c <= board.length - 3) {
+                let test = board[r][c] + board[r][c+1] +board[r][c+2]
+                if (test == 3 || test == 15) {
+                    ctx.beginPath(); 
+                    ctx.moveTo(c * 100 + 20, r * 100 + 50);
+                    ctx.lineTo((c+2) * 100 + 80, r * 100 + 50);
+                    ctx.strokeStyle = '#f2849e';
+                    ctx.lineWidth = 5;
+                    ctx.stroke()
+                    return;
+                }
+            }
+
+            if (r <= board.length - 3 && c <= board.length - 3) {
+                let test = board[r][c] + board[r+1][c+1] +board[r+2][c+2]
+                if (test == 3 || test == 15) {
+                    ctx.beginPath(); 
+                    ctx.moveTo(c * 100 + 50, r * 100 + 50);
+                    ctx.lineTo((c+2) * 100 + 50, (r+2) * 100 + 50);
+                    ctx.strokeStyle = '#f2849e';
+                    ctx.lineWidth = 5;
+                    ctx.stroke()
+                    return;
+                }
+            }
+
+            if (r >= 2 && c >= 2) {
+                let test = board[r][c-2] + board[r-1][c-1] +board[r-2][c]
+                if (test == 3 || test == 15) {
+                    ctx.beginPath(); 
+                    ctx.moveTo((c-2) * 100 + 50, r * 100 + 50);
+                    ctx.lineTo((c) * 100 + 50, (r-2) * 100 + 50);
+                    ctx.strokeStyle = '#f2849e';
+                    ctx.lineWidth = 5;
+                    ctx.stroke()
+                    return;
+                }
+            }
+        }
+    }
+    return;
 }
 
 function getMousePos(canvas, e) {
@@ -116,11 +192,13 @@ function resetCanvas(){
     ctx.clearRect(0, 0, w, h);
     drawGrid(ctx, w, h, step);
     resetBoard();
+    $("#question").text("")
     marked = [[0,0,0], [0,0,0], [0,0,0]]
     return false;
 }
 
 drawGrid(ctx, w, h, step);
+$("#question").text("")
 marked = [[0,0,0], [0,0,0], [0,0,0]]
 let board = getBoard().then(function (board) {
     update(board);

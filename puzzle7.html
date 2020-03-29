@@ -5,8 +5,14 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/puzzle.css" />
 		<link rel='icon' href='images/favi.png' type='image/png'/>
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="//cdn.quilljs.com/1.3.6/quill.bubble.css">
+		<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+		<script src="https://pagecdn.io/lib/ace/1.4.5/ace.js" integrity="sha256-5Xkhn3k/1rbXB+Q/DX/2RuAtaB4dRRyQvMs83prFjpM=" crossorigin="anonymous"></script>
+		<style type="text/css" media="screen">
+		</style>
 	</head>
 	<body class="is-preload landing">
 		<!-- Wrapper -->
@@ -64,14 +70,60 @@
 								</ul>
 							</form>
 						</div>
+
 						<div class="in-team">
 							<header>
-								<h1>Puzzle 7</h1>
+								<h1>Leat Code</h1>
+								<p>Puzzle Credits: Owen Shen</p>
 								<ul class="actions">
 									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
 								</ul>
 							</header>
-							<span class="image main"><img src="images/pic13.jpg" alt="" /></span>
+
+							<h2> 1. Two Sum </h2>
+							<h3 style="color: seagreen;  display: inline;">Easy </h3> &emsp;
+							<h3 style="display: inline;"> 
+								<i id="up" class="fas fa-thumbs-up" onclick="clickUp()"></i> 13967 &emsp;
+								<i id="down" class="fas fa-thumbs-down" onclick="clickDown()"></i> 511 &emsp;
+								<i id="heart" class="fas fa-heart" onclick="clickHeart()"></i> Add to List &emsp;
+								<i class="fas fa-share"></i> Share
+							</h3>
+
+							<br>
+
+							<div class="line"></div>
+							
+							<p>
+								Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.
+								<br>
+								You may assume that each input would have <strong><i>exactly</i></strong> one solution, and you may not use the same element twice.<br>
+								<br>
+								<strong>Example:</strong>
+							</p>
+
+							<div id="example">
+								<p> Given nums = [2, 7, 11, 15], target = 9, </p>
+								<br>
+								<p> Because nums[0] + nums[1] = 2 + 7 = 9, </p>
+								<p> return [0, 1]. </p>
+							</div>
+							<br>
+							<p>
+								Accepted 2,674,920 &emsp; | &emsp; Submissions 5,922,815
+							</p>
+							<div class="line"></div>
+							<div id="output" style="color:#f2849e"></div>
+							<form id="code-editor" method="post" onsubmit="return runCode(editor.getValue())">
+								<div id="parent">
+									<div id="editor">#Syntax highlighting only supported in Python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:	
+		</div>
+								</div>
+								<input type="submit" value="Run Code"/>
+							</form>
+							<br>
+
 							<form id="puzzle-box" method="post" onsubmit="return verify()">
 								<div class="fields">
 									<div class="field half">
@@ -109,6 +161,7 @@
 			// Initialize Firebase
 			firebase.initializeApp(firebaseConfig);
 		</script>
+
 		<script src="https://www.gstatic.com/firebasejs/7.6.0/firebase-auth.js"></script>
   		<!-- Scripts -->
 		<script src="assets/js/jquery.min.js"></script>
@@ -117,5 +170,51 @@
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/puzzle.js"></script>
+		
+		<script>
+			var example = new Quill('#example', {
+				theme: 'bubble',
+			});
+			example.enable(false);
+		</script>
+
+
+		<script>
+			var editor = ace.edit("editor");
+			editor.setTheme("ace/theme/monokai");
+			editor.session.setMode("ace/mode/python");
+			editor.session.setUseSoftTabs(false);
+			editor.setShowInvisibles(true);
+			editor.setOptions({ fontSize: "10pt" });
+		</script>
+
+		<script> 
+			function clickUp() {
+				if ($("#up").css("color") == "rgb(255, 255, 255)") {
+					$("#up").css("color", "forestgreen");
+				} else {
+					$("#up").css("color", "rgb(255, 255, 255)");
+				}
+				$("#down").css("color", "rgb(255, 255, 255)");
+			}
+			
+			function clickDown() {
+				if ($("#down").css("color") == "rgb(255, 255, 255)") {
+					$("#down").css("color", "#B2170E");
+				} else {
+					$("#down").css("color", "rgb(255, 255, 255)");
+				}
+				$("#up").css("color", "rgb(255, 255, 255)");
+
+			}
+
+			function clickHeart() {
+				if ($("#heart").css("color") == "rgb(255, 255, 255)") {
+					$("#heart").css("color", "pink");
+				} else {
+					$("#heart").css("color", "rgb(255, 255, 255)");
+				}
+			}
+		</script>
 	</body>
 </html>
