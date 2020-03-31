@@ -20,21 +20,15 @@ let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13',
 let passcode = "beta"
 
 let answers = {
-  '1': 'respawn', 
+  '1': 'generations', 
   '2': 'barrel', 
   '3': 'dialga', 
   '4': 'answer', 
-  '5': 'answer', 
+  '5': 'quicksave', 
   '6': 'outside', 
   '7': 'answer', 
   '8': 'tilt', 
-  '9': 'ragequit', 
-  '10': 'answer', 
-  '11': 'konami', 
-  '12': 'answer', 
-  '13': 'answer', 
-  '14': 'answer', 
-  '15': 'answer', 
+  '9': 'ragequit'
 }
 
 //konami in morse
@@ -681,7 +675,22 @@ function botMove(board) {
     arr[7] += board[4][2] + board[3][3] + board[2][4]
 
     for (var i = 0; i < arr.length; i++) {
-      if (arr[i] == 2 || arr[i] == 10) {
+      if (arr[i] == 10) {
+        //block or win
+        let positions = win_conditions[i];
+        for (var x = 0; x < positions.length; x++) {
+          let row = positions[x][0];
+          let col = positions[x][1];
+          if (board[row][col] == 0) {
+            board[row][col] = 5
+            return;
+          }
+        }
+      }
+    }
+
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] == 2) {
         //block or win
         let positions = win_conditions[i];
         for (var x = 0; x < positions.length; x++) {
@@ -696,12 +705,35 @@ function botMove(board) {
     }
 
     var diag_trick = false;
+    var knight_trick = false
     for (var i = 0; i < arr.length; i++){
       if (board[3][3] == 5 && arr[i] == 7) {
         diag_trick = true;
         break;
       }
+      if (board[3][3] == 5 && arr[i] == 6) {
+        knight_trick = true;
+      }
     }
+    if (knight_trick) {
+      if (!board[2][3] && !board[4][3]) {
+        board[2][3] = 5;
+        return
+      } else if (!board[3][2] && !board[3][4]) {
+        board[3][2] = 5;
+        return
+      } else {
+        for (var r = 2; r <= 4; r++) {
+          for (var c = 2; c <= 4; c++) {
+            if (!board[r][c]) {
+              board[r][c] = 5;
+              return
+            }
+          }
+        }
+      }
+    }
+
     if (diag_trick) {
       if (!board[2][3]) {
         board[2][3] = 5;
