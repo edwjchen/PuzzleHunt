@@ -91,22 +91,22 @@ function populateLeaderboard(lb) {
 			arr[3] = arr[3].join(', ')
 		}
 		if (count == 0) {
-			$("#lb").append("<tr><td><span style=\"color: #ffd700;\">1st</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/15</td></tr>")
+			$("#lb").append("<tr><td><span style=\"color: #ffd700;\">1st</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/9</td></tr>")
 			if (teamname && arr[0] == teamname){
 				$(".in-team").append("Team "+teamname+" placed <span style=\"color: #ffd700;\">1st!</span>")
 			}
 		} else if (count == 1) {
-			$("#lb").append("<tr><td><span style=\"color: #c0c0c0;\">2nd</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/15</td></tr>")
+			$("#lb").append("<tr><td><span style=\"color: #c0c0c0;\">2nd</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/9</td></tr>")
 			if (teamname && arr[0] == teamname){
 				$(".in-team").append("Team "+teamname+" placed <span style=\"color: #c0c0c0;\">2nd!</span>")
 			}
 		} else if (count == 2) {
-			$("#lb").append("<tr><td><span style=\"color: #cd7f32;\">3rd</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/15</td></tr>")
+			$("#lb").append("<tr><td><span style=\"color: #cd7f32;\">3rd</span></td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/9</td></tr>")
 			if (teamname && arr[0] == teamname){
 				$(".in-team").append("Team "+teamname+" placed <span style=\"color: #cd7f32;\">3rd!</span>")
 			}
 		} else {
-	  		$("#lb").append("<tr><td>"+rank+"th</td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/15</td></tr>")
+	  		$("#lb").append("<tr><td>"+rank+"th</td><td>"+arr[0]+"</td><td>"+arr[3]+"</td><td>"+arr[1]+"/9</td></tr>")
 	  		if (teamname && arr[0] == teamname){
 				$(".in-team").append("Team "+teamname+" placed <span style=\"color: #f2849e;\">"+rank+"th!</span>")
 			}

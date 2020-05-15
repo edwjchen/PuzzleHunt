@@ -3716,3 +3716,9 @@ input, select, textarea {
 			}
 
 		}
+
+.credits {
+	width: 33%;
+	display: inline-block;
+	padding-left: 5em;
+}

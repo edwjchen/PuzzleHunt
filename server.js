@@ -17,16 +17,16 @@ let team_boards = {}
 let leaderboard = []
 let lastLeaderboard = Date.now()
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
-let passcode = "beta"
+let passcode = "glhf"
 
 let answers = {
   '1': 'generations', 
   '2': 'barrel', 
   '3': 'dialga', 
-  '4': 'answer', 
+  '4': 'seuss', 
   '5': 'quicksave', 
   '6': 'outside', 
-  '7': 'answer', 
+  '7': 'konami', 
   '8': 'tilt', 
   '9': 'ragequit'
 }
@@ -689,6 +689,7 @@ function botMove(board) {
       }
     }
 
+
     for (var i = 0; i < arr.length; i++) {
       if (arr[i] == 2) {
         //block or win
@@ -707,7 +708,7 @@ function botMove(board) {
     var diag_trick = false;
     var knight_trick = false
     for (var i = 0; i < arr.length; i++){
-      if (board[3][3] == 5 && arr[i] == 7) {
+      if (board[3][3] == 1 && arr[i] == 7) {
         diag_trick = true;
         break;
       }
@@ -715,19 +716,44 @@ function botMove(board) {
         knight_trick = true;
       }
     }
+
     if (knight_trick) {
       if (!board[2][3] && !board[4][3]) {
-        board[2][3] = 5;
-        return
+        if (board[4][3] == 0) {
+          board[4][3] = 5;
+          return
+        } else if (board[2][3] == 0) {
+          board[2][3] = 5;
+          return
+        }
       } else if (!board[3][2] && !board[3][4]) {
-        board[3][2] = 5;
-        return
+        if (board[3][2] == 0) {
+          board[3][2] = 5;
+          return
+        } else if (board[3][4] == 0) {
+          board[3][4] = 5;
+          return
+        }
       } else {
-        for (var r = 2; r <= 4; r++) {
-          for (var c = 2; c <= 4; c++) {
-            if (!board[r][c]) {
-              board[r][c] = 5;
-              return
+        if (!board[2][2] && (board[2][3] == 1 || board[3][2] == 1)) {
+          board[2][2] = 5;
+          return
+        } else if (!board[2][4] && (board[2][3] == 1 || board[4][3] == 1)) {
+          board[2][4] = 5;
+          return
+        } else if (!board[4][2] && (board[3][2] == 1 || board[3][4] == 1)) {
+          board[4][2] = 5;
+          return
+        } else if (!board[4][4] && (board[3][4] == 1 || board[4][3] == 1)) {
+          board[4][4] = 5;
+          return
+        } else {
+          for (var r = 2; r <= 4; r++) {
+            for (var c = 2; c <= 4; c++) {
+              if (!board[r][c]) {
+                board[r][c] = 5;
+                return
+              }
             }
           }
         }
@@ -735,17 +761,17 @@ function botMove(board) {
     }
 
     if (diag_trick) {
-      if (!board[2][3]) {
-        board[2][3] = 5;
+      if (!board[2][2]) {
+        board[2][2] = 5;
         return
-      } else if (!board[3][2]) {
-        board[3][2] = 5;
+      } else if (!board[2][4]) {
+        board[2][4] = 5;
         return
-      } else if (!board[3][4]) {
-        board[3][4] = 5;
+      } else if (!board[4][2]) {
+        board[4][2] = 5;
         return
-      } else if (!board[4][3]) {
-        board[4][3] = 5;
+      } else if (!board[4][4]) {
+        board[4][4] = 5;
         return
       } else {
         for (var r = 2; r <= 4; r++) {
@@ -759,16 +785,16 @@ function botMove(board) {
       }
     } else {
       //place in corner 
-      if (!board[2][2]) {
+      if (!board[2][2] && (board[2][3] == 1 || board[3][2] == 1)) {
         board[2][2] = 5;
         return
-      } else if (!board[2][4]) {
+      } else if (!board[2][4] && (board[2][3] == 1 || board[4][3] == 1)) {
         board[2][4] = 5;
         return
-      } else if (!board[4][2]) {
+      } else if (!board[4][2] && (board[3][2] == 1 || board[3][4] == 1)) {
         board[4][2] = 5;
         return
-      } else if (!board[4][4]) {
+      } else if (!board[4][4] && (board[3][4] == 1 || board[4][3] == 1)) {
         board[4][4] = 5;
         return
       } else {

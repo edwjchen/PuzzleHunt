@@ -75,9 +75,6 @@
 							<header>
 								<h1>Leat Code</h1>
 								<p>Puzzle Credits: Owen Shen</p>
-								<ul class="actions">
-									<li><a href="puzzle"><input type="submit" value="Back To Puzzles" class="primary" /></a></li>
-								</ul>
 							</header>
 
 							<h2> 1. Two Sum </h2>
@@ -86,7 +83,7 @@
 								<i id="up" class="fas fa-thumbs-up" onclick="clickUp()"></i> 13967 &emsp;
 								<i id="down" class="fas fa-thumbs-down" onclick="clickDown()"></i> 511 &emsp;
 								<i id="heart" class="fas fa-heart" onclick="clickHeart()"></i> Add to List &emsp;
-								<i class="fas fa-share"></i> Share
+								<i id="share" class="fas fa-share" onclick="clickShare()"></i> Share
 							</h3>
 
 							<br>
@@ -97,6 +94,7 @@
 								Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.
 								<br>
 								You may assume that each input would have <strong><i>exactly</i></strong> one solution, and you may not use the same element twice.<br>
+								Be sure to pay close attention to the error messages, and look out for indentation errors.<br>
 								<br>
 								<strong>Example:</strong>
 							</p>
@@ -213,6 +211,13 @@ class Solution:
 					$("#heart").css("color", "pink");
 				} else {
 					$("#heart").css("color", "rgb(255, 255, 255)");
+				}
+			}
+			function clickShare() {
+				if ($("#share").css("color") == "rgb(255, 255, 255)") {
+					$("#share").css("color", "#5DADE2");
+				} else {
+					$("#share").css("color", "rgb(255, 255, 255)");
 				}
 			}
 		</script>

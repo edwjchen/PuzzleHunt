@@ -535,7 +535,6 @@
   }
   
   function reset() {
-    aliens = [];
     setupAlienFormation(1);
     player.reset();
   }
@@ -586,6 +585,7 @@
             hasGameStarted = false;
             gameOver = true;
             wave=1;
+            reset()
           }
           setupAlienFormation(wave);
         }
@@ -628,8 +628,11 @@
     for (var i = 0, len = aliens.length; i < len; i++) {
       var alien = aliens[i];
       if (alien.bullet !== null && checkRectCollision(alien.bullet.bounds, player.bounds)) {
-        if (player.lives === 0) {
+        if (player.lives <= 0) {
           hasGameStarted = false;
+          gameOver = true;
+          wave=1;
+          reset()
         } else {
          alien.bullet.alive = false;
          particleManager.createExplosion(player.position.x, player.position.y, 'green', 100, 8,8,6,0.001,40);
