@@ -14,6 +14,8 @@ let team_pass = {}
 let team_ans_time = {}
 let team_data = {}
 let team_boards = {}
+let user_boards = {}
+let user_data = {}
 let leaderboard = []
 let lastLeaderboard = Date.now()
 let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
@@ -85,7 +87,11 @@ async function updateTeams() {
       team_times[teamname] = 0;
     }
     if (!(teamname in team_scores)) {
-      team_scores[teamname] = new Set();
+      if (doc.data().ans == undefined) {
+        team_scores[teamname] = new Set()
+      } else {
+        team_scores[teamname] = new Set(doc.data().ans);
+      }
     }
     if (!(teamname in team_ans_time)) {
       team_ans_time[teamname] = 0;
@@ -250,6 +256,7 @@ app.post('/createTeam', function(req, res) {
       var data = {
         name: req.body.teamname,
         members: [req.body.uid],
+        ans: [],
         secretkey: secretkey
       }
       console.log(data)
@@ -274,6 +281,7 @@ app.post('/createTeam', function(req, res) {
             team_scores[req.body.teamname] = new Set();
             team_ans_time[req.body.teamname] = 0;
             team_data[req.body.team] = [0,0,0]
+            user_data[req.body.uid] = [0,0,0]
           })
         }).catch(function(error) {
           // Handle Errors here.
@@ -495,7 +503,22 @@ app.post('/verify', function(req,res) {
           team_times[req.body.team] = now;
           team_ans_time[req.body.team] = now;
           team_scores[req.body.team].add(req.body.num)
-          res.sendStatus(200);
+
+          curr_scores = Array.from(team_scores[req.body.team])
+          //update database:
+          db.collection('teams').doc(req.body.team).get().then(teamdoc => {
+            let teamdata = teamdoc.data();
+            if (!('ans' in teamdata)) {
+              teamdata['ans'] = []
+            }
+            merged_scores = curr_scores.concat(teamdata['ans'])
+            dedup_scores = new Set(merged_scores)
+
+            teamdata['ans'] = Array.from(dedup_scores)
+            db.collection('teams').doc(req.body.team).set(teamdata).then(ref => {
+              res.sendStatus(200);
+            })
+          })
         } else {
           res.status(200).send({
              message: 'wrong'
@@ -522,8 +545,8 @@ app.post('/verify', function(req,res) {
 })
 
 app.post('/runcode', function(req,res) {
-  if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0,0]
+  if (!(req.body.user in user_data)) {
+    user_data[req.body.user] = [0,0,0]
   }
 
   if (!(req.body.team in team_scores)) {
@@ -539,16 +562,16 @@ app.post('/runcode', function(req,res) {
           if (i-3 < konami.length) {
             for (var j = 0; j < konami[i-3].length; j++) {
               if (konami[i-3].charAt(j) != content[i].charAt(j)) {
-                team_data[req.body.team][0]++
+                user_data[req.body.user][0]++
                 if (konami[i-3].charAt(j) === '\t') {
                   res.status(200).send({
-                    message: team_data[req.body.team][0] + '. MissingTabError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                    message: user_data[req.body.user][0] + '. MissingTabError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
                   });
                   team_times[req.body.team] = now;
                   return;
                 } else {
                   res.status(200).send({
-                    message: team_data[req.body.team][0] + '. MissingSpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
+                    message: user_data[req.body.user][0] + '. MissingSpaceError: inconsistent use of tabs and spaces in indentation on line '+(i+1)
                   });
                   team_times[req.body.team] = now;
                   return;
@@ -595,8 +618,8 @@ app.post('/runcode', function(req,res) {
 })
 
 app.post('/setupFormation', function(req,res) {
-  if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0,0]
+  if (!(req.body.user in user_data)) {
+    user_data[req.body.user] = [0,0,0]
   }
 
   res.status(200).send({
@@ -812,29 +835,29 @@ function botMove(board) {
 }
 
 app.post('/tictactoe', function(req,res) {
-  if (!(req.body.team in team_boards)) {
-    team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+  if (!(req.body.user in user_boards)) {
+    user_boards[req.body.user] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
   }
 
-  if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0,0]
+  if (!(req.body.user in user_data)) {
+    user_data[req.body.user] = [0,0,0]
   }
 
-  if ( team_data[req.body.team][2] == -1) {
+  if ( user_data[req.body.user][2] == -1) {
     res.status(200).send({message: 'game over'})
     return;
   }
 
-  if (team_data[req.body.team][2] == 0) {
+  if (user_data[req.body.user][2] == 0) {
     //restrict first move to be in squares
     if (req.body.x >= 2 && req.body.x <= 4 && req.body.y >= 2 && req.body.y <= 4) {
-      team_boards[req.body.team][req.body.y][req.body.x] = 1;
-      team_data[req.body.team][2]++
+      user_boards[req.body.user][req.body.y][req.body.x] = 1;
+      user_data[req.body.user][2]++
 
-      botMove(team_boards[req.body.team]);
+      botMove(user_boards[req.body.user]);
 
       res.status(200).send({
-        board: team_boards[req.body.team]
+        board: user_boards[req.body.user]
       });
     } else {
       res.status(200).send({
@@ -859,44 +882,44 @@ app.post('/tictactoe', function(req,res) {
   //   }
   // } 
   else {
-    if (req.body.x >= 1 && req.body.x <= 5 && req.body.y >= 1 && req.body.y <= 5 && team_boards[req.body.team][req.body.y][req.body.x] == 0) {
-      team_boards[req.body.team][req.body.y][req.body.x] = 1;
-      team_data[req.body.team][2]++
+    if (req.body.x >= 1 && req.body.x <= 5 && req.body.y >= 1 && req.body.y <= 5 && user_boards[req.body.user][req.body.y][req.body.x] == 0) {
+      user_boards[req.body.user][req.body.y][req.body.x] = 1;
+      user_data[req.body.user][2]++
 
-      let result = checkWin(team_boards[req.body.team])
+      let result = checkWin(user_boards[req.body.user])
       if (result) {
-        team_data[req.body.team][2] = -1
+        user_data[req.body.user][2] = -1
         res.status(200).send({
           message: 'player win',
-          board: team_boards[req.body.team],
+          board: user_boards[req.body.user],
           secret: "think _______ title"
         });
         return 
       }
-      botMove(team_boards[req.body.team]);
-      result = checkWin(team_boards[req.body.team])
+      botMove(user_boards[req.body.user]);
+      result = checkWin(user_boards[req.body.user])
 
       if (result) {
-        team_data[req.body.team][2] = -1
+        user_data[req.body.user][2] = -1
         res.status(200).send({
           message: 'computer win',
-          board: team_boards[req.body.team]
+          board: user_boards[req.body.user]
         });
         return 
       }
 
-      result = checkDraw(team_boards[req.body.team])
+      result = checkDraw(user_boards[req.body.user])
       if (result) {
-        team_data[req.body.team][2] = -1
+        user_data[req.body.user][2] = -1
         res.status(200).send({
           message: 'draw',
-          board: team_boards[req.body.team]
+          board: user_boards[req.body.user]
         });
         return;
       }
 
       res.status(200).send({
-        board: team_boards[req.body.team]
+        board: user_boards[req.body.user]
       });
     } else {
       res.status(200).send({
@@ -907,12 +930,12 @@ app.post('/tictactoe', function(req,res) {
 })
 
 app.post('/resetBoard', function(req,res) {
-  team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+  user_boards[req.body.user] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
 
-  if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0,0]
+  if (!(req.body.user in user_data)) {
+    user_data[req.body.user] = [0,0,0]
   } else {
-    team_data[req.body.team][2] = 0
+    user_data[req.body.user][2] = 0
   }
 
   res.status(200).send({});
@@ -920,16 +943,16 @@ app.post('/resetBoard', function(req,res) {
 
 
 app.post('/getBoard', function(req,res) {
-  if (!(req.body.team in team_boards)) {
-    team_boards[req.body.team] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
+  if (!(req.body.user in user_boards)) {
+    user_boards[req.body.user] = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0]]
   }
 
-  if (!(req.body.team in team_data)) {
-    team_data[req.body.team] = [0,0,0]
+  if (!(req.body.user in user_data)) {
+    user_data[req.body.user] = [0,0,0]
   } 
 
   res.status(200).send({
-    board: team_boards[req.body.team]
+    board: user_boards[req.body.user]
   });
 })
 

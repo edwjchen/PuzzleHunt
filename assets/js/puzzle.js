@@ -185,7 +185,8 @@ function runCode(value) {
     data: {
       team: teamname,
       num: num,
-      ans: value
+      ans: value,
+      user: firebase.auth().currentUser.uid,
     },
     success: function(data, textStatus, jqXHR) {
       let res =  data['message'];
@@ -210,7 +211,8 @@ async function setupFormation(wave) {
       type: "POST",
       data: {
         team: teamname,
-        wave: wave
+        wave: wave,
+        user: firebase.auth().currentUser.uid,
       },
       success: function(data, textStatus, jqXHR) {
         let res =  data['message'];
@@ -234,6 +236,7 @@ async function makeMove(pos) {
       type: "POST",
       data: {
         team: teamname,
+        user: firebase.auth().currentUser.uid,
         x: x,
         y: y
       },
@@ -257,6 +260,7 @@ function resetBoard(pos) {
     type: "POST",
     data: {
       team: teamname,
+      user: firebase.auth().currentUser.uid
     },
     success: function(data, textStatus, jqXHR) {
     
@@ -286,6 +290,7 @@ async function getBoard() {
               type: "POST",
               data: {
                 team: teamname,
+                user: firebase.auth().currentUser.uid
               },
               success: function(data, textStatus, jqXHR) {
                 resolve(data.board)
