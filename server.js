@@ -145,6 +145,11 @@ app.get('/leaderboard', function(req, res){
   res.sendFile(path.join(__dirname, 'leaderboard.html'));
 })
 
+app.get('/thanks', function(req, res){
+  res.sendFile(path.join(__dirname, 'thanks.html'));
+})
+
+
 app.get('/getLeaderboard', function(req, res){
   if (lastLeaderboard + 60*1000 < Date.now()) {
     updateLeaderboard();
