@@ -191,24 +191,24 @@ app.get('/puzzle', function(req, res){
     case '9':
       res.sendFile(path.join(__dirname, 'puzzle9.html'));
       break;
-    case '10':
-      res.sendFile(path.join(__dirname, 'puzzle10.html'));
-      break;
-    case '11':
-      res.sendFile(path.join(__dirname, 'puzzle11.html'));
-      break;
-    case '12':
-      res.sendFile(path.join(__dirname, 'puzzle12.html'));
-      break;
-    case '13':
-      res.sendFile(path.join(__dirname, 'puzzle13.html'));
-      break;
-    case '14':
-      res.sendFile(path.join(__dirname, 'puzzle14.html'));
-      break;
-    case '15':
-      res.sendFile(path.join(__dirname, 'puzzle15.html'));
-      break;
+    // case '10':
+    //   res.sendFile(path.join(__dirname, 'puzzle10.html'));
+    //   break;
+    // case '11':
+    //   res.sendFile(path.join(__dirname, 'puzzle11.html'));
+    //   break;
+    // case '12':
+    //   res.sendFile(path.join(__dirname, 'puzzle12.html'));
+    //   break;
+    // case '13':
+    //   res.sendFile(path.join(__dirname, 'puzzle13.html'));
+    //   break;
+    // case '14':
+    //   res.sendFile(path.join(__dirname, 'puzzle14.html'));
+    //   break;
+    // case '15':
+    //   res.sendFile(path.join(__dirname, 'puzzle15.html'));
+    //   break;
     default:
       res.sendFile(path.join(__dirname, 'puzzle.html'));
   }
