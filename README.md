@@ -29,7 +29,7 @@ gcloud app deploy
 
 ## Built With
 
-* [Node.js])(https://nodejs.org/en/) - Routing and server
+* [Node.js](https://nodejs.org/en/) - Routing and server
 * [Firebase](https://firebase.google.com/) - Database
 * [Google App Engine](https://cloud.google.com/appengine/) - Hosting
 
