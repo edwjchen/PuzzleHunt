@@ -47,75 +47,56 @@
 			<!-- Main -->
 			<div id="main">
 				<div class="inner">
-					<div id="notregistered">
-						<h2>Please sign up or login first!</h2>
-						<form action="/">
+					<div class="in-team">
+						<header>
+							<h1>Compounding Gameplay</h1>
+							<h3>*Best played in desktop view :')</h3>
+						</header>
+						<br>
+
+						<div class="row" style="margin-left: -50px; margin-right: -50px;">
+							<ul dir="rtl">
+								<li> A group of stick gum</li><br>
+								<li> What and stones</li><br>
+								<li> Security men</li><br>
+								<li> A location</li><br>
+								<li> Weathering the what</li><br>
+								<li> Third out of three</li><br>
+								<li> Ag #47</li><br>
+								<li> Luke is on what side</li><br>
+								<li> Eight is what</li>
+							</ul>
+							<canvas id="canvas" width="600" height="500"></canvas>
+							<ul>
+								<li>Adj for Hermes, the God of Speed</li><br>
+								<li>Not in</li><br>
+								<li>Some call it a violin</li><br>
+								<li>Just do it logo </li><br>
+								<li>Erector spinae</li><br>
+								<li>Gets in your shoes at La Jolla Shores</li><br>
+								<li>F is for what, not D</li><br>
+								<li>Vehicle that seats at least 8</li><br>
+								<li>A bazaar</li>
+							</ul>
+						</div>
+						<br>
+						<br>
+						<br>
+						<br>
+				
+						<form id="puzzle-box" method="post" onsubmit="return verify()">
+							<div class="fields">
+								<div class="field half">
+									<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
+									<div id="answer-error" style="color: #f2849e;"></div>
+								</div>
+							</div>
 							<ul class="actions">
-								<li><input type="submit" value="Sign up here" class="primary" /></li>
+								<li><input type="submit" value="Submit" class="primary" /></li>
 							</ul>
 						</form>
-					</div>
-					<div class="registered">
-						<div class="no-team">
-							<h2>Please join a team!</h2>
-							<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
-							<form action="/team">
-								<ul class="actions">
-									<li><input type="submit" value="Sign up here" class="primary" /></li>
-								</ul>
-							</form>
-						</div>
-						<div class="in-team">
-							<header>
-								<h1>Compounding Gameplay</h1>
-								<h3>*Best played in desktop view :')</h3>
-							</header>
-							<br>
-
-							<div class="row" style="margin-left: -50px; margin-right: -50px;">
-								<ul dir="rtl">
-									<li> A group of stick gum</li><br>
-									<li> What and stones</li><br>
-									<li> Protect</li><br>
-									<li> A location</li><br>
-									<li> Weathering the what</li><br>
-									<li> Third out of three</li><br>
-									<li> Ag #47</li><br>
-									<li> Luke is on what side</li><br>
-									<li> Eight is what</li>
-								</ul>
-								<canvas id="canvas" width="600" height="500"></canvas>
-								<ul>
-									<li>Adj for Hermes, the God of Speed</li><br>
-									<li>Not in</li><br>
-									<li>Some call it a violin</li><br>
-									<li>Just do it logo </li><br>
-									<li>Erector spinae</li><br>
-									<li>Gets in your shoes at La Jolla Shores</li><br>
-									<li>F is for what, not D</li><br>
-									<li>Starry night</li><br>
-									<li>A bazaar</li>
-								</ul>
-							</div>
-							<br>
-							<br>
-							<br>
-							<br>
-					
-							<form id="puzzle-box" method="post" onsubmit="return verify()">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
-										<div id="answer-error" style="color: #f2849e;"></div>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Submit" class="primary" /></li>
-								</ul>
-							</form>
-							<div id="puzzle-done">
-								<h2>Correct</h2>
-							</div>
+						<div id="puzzle-done">
+							<h2>Correct</h2>
 						</div>
 					</div>
 				</div>

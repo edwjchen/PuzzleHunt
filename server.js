@@ -94,7 +94,11 @@ async function updateTeams() {
       }
     }
     if (!(teamname in team_ans_time)) {
-      team_ans_time[teamname] = 0;
+      if (doc.data().time == undefined) {
+        team_ans_time[teamname] = 0;
+      } else {
+        team_ans_time[teamname] = doc.data().time;
+      }
     }
   });
 }
@@ -229,7 +233,9 @@ app.post('/signup', function(req, res) {
         res.sendStatus(200);
       });
     } else {
-      res.sendStatus(500);
+      res.status(200).send({
+        message: 'exist'
+      });
     }
   }).catch(function(error) {
     // Handle Errors here.
@@ -241,7 +247,9 @@ app.post('/login', function(req, res) {
   let userref = db.collection('users').doc(req.body.uid);
   userref.get().then(doc => {
     if (!doc.exists) {
-      res.sendStatus(500);
+      res.status(200).send({
+        message: 'noexist'
+      });
     } else {
       res.sendStatus(200);
     }
@@ -262,6 +270,7 @@ app.post('/createTeam', function(req, res) {
         name: req.body.teamname,
         members: [req.body.uid],
         ans: [],
+        time: 0,
         secretkey: secretkey
       }
       console.log(data)
@@ -294,7 +303,9 @@ app.post('/createTeam', function(req, res) {
         });
       });
     } else {
-      res.sendStatus(500);
+      res.status(200).send({
+        message: 'already exists'
+      });
       return;
     }
   }).catch(function(error) {
@@ -308,7 +319,9 @@ app.post('/getTeam', function(req, res) {
     if (userdoc.exists) {
       let teamname = userdoc.data().team;
       if (teamname == "") {
-        res.sendStatus(500);
+        res.status(200).send({
+          message: 'noteam'
+        });
         return;
       }
 
@@ -334,17 +347,23 @@ app.post('/getTeam', function(req, res) {
             res.send(userdata);
           })
         } else {
-          res.sendStatus(500);
+          res.status(200).send({
+            message: 'noteam'
+          });
           return;
         }
       }).catch(function(error) {
         // Handle Errors here.
         console.log(error)
-        res.sendStatus(500);
+        res.status(200).send({
+          message: 'noteam'
+        });
         return;
       });
     } else {
-      res.sendStatus(500);
+      res.status(200).send({
+        message: 'noteam'
+      });
       return;
     }
   }).catch(function(error) {
@@ -390,7 +409,9 @@ app.post('/joinTeam', function(req, res) {
   let teamref = db.collection('teams').doc(req.body.teamname);
   db.collection('users').doc(req.body.uid).get().then(udoc => {
     if (udoc.data().team != '') {
-      res.send(500);
+      res.status(200).send({
+        message: 'inteam'
+      });
     } else {
       teamref.get().then(doc => {
         if (doc.exists && doc.data().secretkey === req.body.secretkey && doc.data().members.length < 4) {
@@ -409,7 +430,9 @@ app.post('/joinTeam', function(req, res) {
             console.log(error)
           });    
         } else {
-          res.sendStatus(500);
+          res.status(200).send({
+            message: 'inteam'
+          });
         }
       }).catch(function(error) {
         // Handle Errors here.
@@ -520,6 +543,7 @@ app.post('/verify', function(req,res) {
             dedup_scores = new Set(merged_scores)
 
             teamdata['ans'] = Array.from(dedup_scores)
+            teamdata['time'] = team_ans_time[req.body.team];
             db.collection('teams').doc(req.body.team).set(teamdata).then(ref => {
               res.sendStatus(200);
             })

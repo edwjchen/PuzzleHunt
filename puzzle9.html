@@ -47,53 +47,34 @@
 			<!-- Main -->
 			<div id="main">
 				<div class="inner">
-					<div id="notregistered">
-						<h2>Please sign up or login first!</h2>
-						<form action="/">
+					<div class="in-team">
+						<header>
+							<h1>Meta End Game</h1>
+						</header>
+
+						<h2>1. <i class="fas fa-chess-rook"></i></h2>
+						<h2>2. <i class="fas fa-chess-pawn"></i><i class="fas fa-chess-pawn"></i></h2>
+						<h2>3. <i class="fas fa-chess-rook"></i></h2>
+						<h2>4. <i class="fas fa-chess-pawn"></i><i class="fas fa-chess-pawn"></i></h2>
+						<h2>5. <i class="fas fa-chess-pawn"></i></h2>
+						<h2>6. <i class="fas fa-chess-pawn"></i><i class="fas fa-chess-pawn"></i></h2>
+						<h2>7. <i class="fas fa-chess-rook"></i><i class="fas fa-chess-pawn"></i></h2>
+						<h2>8. <i class="fas fa-chess-knight"></i><i class="fas fa-chess-pawn"></i></h2>
+
+
+						<form id="puzzle-box" method="post" onsubmit="return verify()">
+							<div class="fields">
+								<div class="field half">
+									<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
+									<div id="answer-error" style="color: #f2849e;"></div>
+								</div>
+							</div>
 							<ul class="actions">
-								<li><input type="submit" value="Sign up here" class="primary" /></li>
+								<li><input type="submit" value="Submit" class="primary" /></li>
 							</ul>
 						</form>
-					</div>
-					<div class="registered">
-						<div class="no-team">
-							<h2>Please join a team!</h2>
-							<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
-							<form action="/team">
-								<ul class="actions">
-									<li><input type="submit" value="Sign up here" class="primary" /></li>
-								</ul>
-							</form>
-						</div>
-						<div class="in-team">
-							<header>
-								<h1>End Game</h1>
-							</header>
-
-							<h2>1. <i class="fas fa-chess-rook"></i></h2>
-							<h2>2. <i class="fas fa-chess-pawn"></i><i class="fas fa-chess-pawn"></i></h2>
-							<h2>3. <i class="fas fa-chess-rook"></i></h2>
-							<h2>4. <i class="fas fa-chess-knight"></i></h2>
-							<h2>5. <i class="fas fa-chess-pawn"></i></h2>
-							<h2>6. <i class="fas fa-chess-pawn"></i><i class="fas fa-chess-pawn"></i></h2>
-							<h2>7. <i class="fas fa-chess-rook"></i><i class="fas fa-chess-pawn"></i></h2>
-							<h2>8. <i class="fas fa-chess-knight"></i><i class="fas fa-chess-pawn"></i></h2>
-
-
-							<form id="puzzle-box" method="post" onsubmit="return verify()">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
-										<div id="answer-error" style="color: #f2849e;"></div>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Submit" class="primary" /></li>
-								</ul>
-							</form>
-							<div id="puzzle-done">
-								<h2>Correct</h2>
-							</div>
+						<div id="puzzle-done">
+							<h2>Correct</h2>
 						</div>
 					</div>
 				</div>

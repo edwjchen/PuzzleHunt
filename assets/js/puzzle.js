@@ -2,11 +2,8 @@ let teamname;
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (!user) {
-    $(".registered").hide()
-	  $("#notregistered").show()
+    window.location = "/";
   } else {
-    $(".registered").show()
-	  $("#notregistered").hide()
     $("#menu ul").append(`<li><a href="/" onclick="signout()">Sign Out</a></li>`)
     getTeam()
   }
@@ -20,12 +17,13 @@ function getTeam() {
       uid: firebase.auth().currentUser.uid,
     },
     success: function(data, textStatus, jqXHR) {
-    if (data.team != '') {
+    console.log(data.team)
+    if (data.team != undefined) {
         $(".no-team").hide();
         teamname = data.team;
     } else {
-        $(".no-team").show();
-        $(".in-team").hide();
+      window.location = "/team";
+      return;
     }
 
     if (data.team) {

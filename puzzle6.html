@@ -47,52 +47,33 @@
 			<!-- Main -->
 			<div id="main">
 				<div class="inner">
-					<div id="notregistered">
-						<h2>Please sign up or login first!</h2>
-						<form action="/">
+					<div class="in-team">
+						<header>
+							<h1>The Box</h1>
+							<p>Puzzle Credits: Owen Shen</p>
+						</header>
+
+						<canvas id="grid" style="margin-left: auto; margin-right: auto; display: block;"></canvas>
+						<br>
+						<form method="post" onsubmit="return resetCanvas()">
+							<input type="submit" value="Reset"/>
+						</form>
+						<br>
+						<h2 id='question'></h2>
+						<br><br>
+						<form id="puzzle-box" method="post" onsubmit="return verify()">
+							<div class="fields">
+								<div class="field half">
+									<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
+									<div id="answer-error" style="color: #f2849e;"></div>
+								</div>
+							</div>
 							<ul class="actions">
-								<li><input type="submit" value="Sign up here" class="primary" /></li>
+								<li><input type="submit" value="Submit" class="primary" /></li>
 							</ul>
 						</form>
-					</div>
-					<div class="registered">
-						<div class="no-team">
-							<h2>Please join a team!</h2>
-							<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
-							<form action="/team">
-								<ul class="actions">
-									<li><input type="submit" value="Sign up here" class="primary" /></li>
-								</ul>
-							</form>
-						</div>
-						<div class="in-team">
-							<header>
-								<h1>The Box</h1>
-								<p>Puzzle Credits: Owen Shen</p>
-							</header>
-
-							<canvas id="grid" style="margin-left: auto; margin-right: auto; display: block;"></canvas>
-							<br>
-							<form method="post" onsubmit="return resetCanvas()">
-								<input type="submit" value="Reset"/>
-							</form>
-							<br>
-							<h2 id='question'></h2>
-							<br><br>
-							<form id="puzzle-box" method="post" onsubmit="return verify()">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
-										<div id="answer-error" style="color: #f2849e;"></div>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Submit" class="primary" /></li>
-								</ul>
-							</form>
-							<div id="puzzle-done">
-								<h2>Correct</h2>
-							</div>
+						<div id="puzzle-done">
+							<h2>Correct</h2>
 						</div>
 					</div>
 				</div>

@@ -53,91 +53,71 @@
 			<!-- Main -->
 			<div id="main">
 				<div class="inner">
-					<div id="notregistered">
-						<h2>Please sign up or login first!</h2>
-						<form action="/">
+					<div class="in-team">
+						<header>
+							<h1>Leat Code</h1>
+							<p>Puzzle Credits: Owen Shen</p>
+						</header>
+
+						<h2> 1. Two Sum </h2>
+						<h3 style="color: seagreen;  display: inline;">Easy </h3> &emsp;
+						<h3 style="display: inline;"> 
+							<i id="up" class="fas fa-thumbs-up" onclick="clickUp()"></i> 13967 &emsp;
+							<i id="down" class="fas fa-thumbs-down" onclick="clickDown()"></i> 511 &emsp;
+							<i id="heart" class="fas fa-heart" onclick="clickHeart()"></i> Add to List &emsp;
+							<i id="share" class="fas fa-share" onclick="clickShare()"></i> Share
+						</h3>
+
+						<br>
+
+						<div class="line"></div>
+						
+						<p>
+							Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.
+							<br>
+							You may assume that each input would have <strong><i>exactly</i></strong> one solution, and you may not use the same element twice.<br>
+							Be sure to pay close attention to the error messages, and look out for indentation errors.<br>
+							Tabs will overwrite previous 3 spaces.<br>
+							<br>
+							<strong>Example:</strong>
+						</p>
+
+						<div id="example">
+							<p> Given nums = [2, 7, 11, 15], target = 9, </p>
+							<br>
+							<p> Because nums[0] + nums[1] = 2 + 7 = 9, </p>
+							<p> return [0, 1]. </p>
+						</div>
+						<br>
+						<p>
+							Accepted 2,674,920 &emsp; | &emsp; Submissions 5,922,815
+						</p>
+						<div class="line"></div>
+						<div id="output" style="color:#f2849e"></div>
+						<form id="code-editor" method="post" onsubmit="return runCode(editor.getValue())">
+							<div id="parent">
+								<div id="editor">#Syntax highlighting only supported in Python
+class Solution:
+	def twoSum(self, nums: List[int], target: int) -> List[int]:	
+</div>
+							</div>
+							<input type="submit" value="Run Code"/>
+						</form>
+						<br>
+
+						<form id="puzzle-box" method="post" onsubmit="return verify()">
+							<div class="fields">
+								<div class="field half">
+									<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
+									<div id="answer-error" style="color: #f2849e;"></div>
+								</div>
+							</div>
 							<ul class="actions">
-								<li><input type="submit" value="Sign up here" class="primary" /></li>
+								<li><input type="submit" value="Submit" class="primary" /></li>
 							</ul>
 						</form>
-					</div>
-					<div class="registered">
-						<div class="no-team">
-							<h2>Please join a team!</h2>
-							<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
-							<form action="/team">
-								<ul class="actions">
-									<li><input type="submit" value="Sign up here" class="primary" /></li>
-								</ul>
-							</form>
-						</div>
-
-						<div class="in-team">
-							<header>
-								<h1>Leat Code</h1>
-								<p>Puzzle Credits: Owen Shen</p>
-							</header>
-
-							<h2> 1. Two Sum </h2>
-							<h3 style="color: seagreen;  display: inline;">Easy </h3> &emsp;
-							<h3 style="display: inline;"> 
-								<i id="up" class="fas fa-thumbs-up" onclick="clickUp()"></i> 13967 &emsp;
-								<i id="down" class="fas fa-thumbs-down" onclick="clickDown()"></i> 511 &emsp;
-								<i id="heart" class="fas fa-heart" onclick="clickHeart()"></i> Add to List &emsp;
-								<i id="share" class="fas fa-share" onclick="clickShare()"></i> Share
-							</h3>
-
-							<br>
-
-							<div class="line"></div>
-							
-							<p>
-								Given an array of integers, return <strong>indices</strong> of the two numbers such that they add up to a specific target.
-								<br>
-								You may assume that each input would have <strong><i>exactly</i></strong> one solution, and you may not use the same element twice.<br>
-								Be sure to pay close attention to the error messages, and look out for indentation errors.<br>
-								Tabs will overwrite previous 3 spaces.<br>
-								<br>
-								<strong>Example:</strong>
-							</p>
-
-							<div id="example">
-								<p> Given nums = [2, 7, 11, 15], target = 9, </p>
-								<br>
-								<p> Because nums[0] + nums[1] = 2 + 7 = 9, </p>
-								<p> return [0, 1]. </p>
-							</div>
-							<br>
-							<p>
-								Accepted 2,674,920 &emsp; | &emsp; Submissions 5,922,815
-							</p>
-							<div class="line"></div>
-							<div id="output" style="color:#f2849e"></div>
-							<form id="code-editor" method="post" onsubmit="return runCode(editor.getValue())">
-								<div id="parent">
-									<div id="editor">#Syntax highlighting only supported in Python
-class Solution:
-    def twoSum(self, nums: List[int], target: int) -> List[int]:	
-		</div>
-								</div>
-								<input type="submit" value="Run Code"/>
-							</form>
-							<br>
-
-							<form id="puzzle-box" method="post" onsubmit="return verify()">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
-										<div id="answer-error" style="color: #f2849e;"></div>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Submit" class="primary" /></li>
-								</ul>
-							</form>
-							<div id="puzzle-done">
-								<h2>Correct</h2>
-							</div>
+						<div id="puzzle-done">
+							<h2>Correct</h2>
 						</div>
 					</div>
 				</div>

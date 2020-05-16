@@ -53,6 +53,7 @@ function signout() {
 }
 
 function getLeaderboard() {
+	console.log('here')
 	$.ajax({
 	    url: "/getLeaderboard",
 	    type: "GET",
@@ -65,19 +66,24 @@ function getLeaderboard() {
 	    }
 	  });
 	setInterval(function() {
+		console.log("hfjda")
 		$.ajax({
 		    url: "/getLeaderboard",
 		    type: "GET",
 		    success: function(data, textStatus, jqXHR) {
+				console.log(data.lb)
 		      populateLeaderboard(data.lb)
 		    },
 		    error: function (jqXHR, textStatus, errorThrown) {
+				console.log("here")
 		    }
 		  });
 	}, 60 * 1000)
 }
 
 function populateLeaderboard(lb) {
+	console.log("here?????????")
+	console.log(lb)
 	let count = 0;
 	let rank = count+1
 	$(".in-team").empty()

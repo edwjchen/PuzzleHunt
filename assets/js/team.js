@@ -1,10 +1,7 @@
 firebase.auth().onAuthStateChanged(function(user) {
   if (!user) {
-    $(".registered").hide()
-	$("#notregistered").show()
+	window.location = "/"
   } else {
-    $(".registered").show()
-	$("#notregistered").hide()
     $("#menu ul").append(`<li><a href="/" onclick="signout()">Sign Out</a></li>`)
     $("#intro_title").text("Welcome "+user.displayName.split(" ")[0]+"!");
     getTeam();
@@ -19,7 +16,7 @@ function getTeam() {
     	uid: firebase.auth().currentUser.uid,
     },
     success: function(data, textStatus, jqXHR) {
-    	if (data.team != '') {
+    	if (data.team != undefined) {
 		  	$(".in-team").show();
 		  	$(".no-team").hide();
 		  	$("#teamname").text(data.team);
@@ -29,8 +26,9 @@ function getTeam() {
 		  		$("#secretkeydisplay").text("Ask the team leader!");
 		  	}
 		} else {
-		  	$(".no-team").show();
-		  	$(".in-team").hide();
+			$(".in-team").hide();
+			$(".no-team").show();
+			  return;
 		}
 		$('#members').empty();
 		data.emails.forEach(function(email) {

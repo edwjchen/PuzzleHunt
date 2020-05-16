@@ -47,75 +47,56 @@
 			<!-- Main -->
 			<div id="main">
 				<div class="inner">
-					<div id="notregistered">
-						<h2>Please sign up or login first!</h2>
-						<form action="/">
+					<div class="in-team">
+						<header>
+							<h1>Twists & Turns</h1>
+						</header>
+
+						<h3>Word Bank:</h3>
+						<div>
+							<table>
+								<thead>
+									<tr>
+										<th id="196" onclick="toggleColor(196)">Okami</th>
+										<th id="197" onclick="toggleColor(197)">Shield</th>
+										<th id="198" onclick="toggleColor(198)">Nintendo</th>
+										<th id="199" onclick="toggleColor(199)">Andross</th>
+										<th id="200" onclick="toggleColor(200)">Mccloud</th>
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th id="201" onclick="toggleColor(201)">Sixtyfour</th>
+										<th id="202" onclick="toggleColor(202)">Starfox</th>
+										<th id="203" onclick="toggleColor(203)">Wolf</th>
+										<th id="204" onclick="toggleColor(204)">Falco</th>
+										<th id="205" onclick="toggleColor(205)">Starlink</th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+
+						<h2 class="in-team"></h2>
+							<table>
+								<tbody id="board">
+								</tbody>
+							</table>
+						</div>
+
+
+						<form id="puzzle-box" method="post" onsubmit="return verify()">
+							<div class="fields">
+								<div class="field half">
+									<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
+									<div id="answer-error" style="color: #f2849e;"></div>
+								</div>
+							</div>
 							<ul class="actions">
-								<li><input type="submit" value="Sign up here" class="primary" /></li>
+								<li><input type="submit" value="Submit" class="primary" /></li>
 							</ul>
 						</form>
-					</div>
-					<div class="registered">
-						<div class="no-team">
-							<h2>Please join a team!</h2>
-							<p>You are currently not in a team. You can either create a team or join one with the team's name and secret key below!</p>
-							<form action="/team">
-								<ul class="actions">
-									<li><input type="submit" value="Sign up here" class="primary" /></li>
-								</ul>
-							</form>
-						</div>
-						<div class="in-team">
-							<header>
-								<h1>Twists & Turns</h1>
-							</header>
-
-							<h3>Word Bank:</h3>
-							<div>
-								<table>
-									<thead>
-										<tr>
-											<th id="196" onclick="toggleColor(196)">Okami</th>
-											<th id="197" onclick="toggleColor(197)">Shield</th>
-											<th id="198" onclick="toggleColor(198)">Nintendo</th>
-											<th id="199" onclick="toggleColor(199)">Andross</th>
-											<th id="200" onclick="toggleColor(200)">Mccloud</th>
-										</tr>
-									</thead>
-									<tfoot>
-										<tr>
-											<th id="201" onclick="toggleColor(201)">Sixtyfour</th>
-											<th id="202" onclick="toggleColor(202)">Starfox</th>
-											<th id="203" onclick="toggleColor(203)">Wolf</th>
-											<th id="204" onclick="toggleColor(204)">Falco</th>
-											<th id="205" onclick="toggleColor(205)">Starlink</th>
-										</tr>
-									</tfoot>
-								</table>
-							</div>
-
-							<h2 class="in-team"></h2>
-								<table>
-									<tbody id="board">
-									</tbody>
-								</table>
-							</div>
-
-
-							<form id="puzzle-box" method="post" onsubmit="return verify()">
-								<div class="fields">
-									<div class="field half">
-										<input type="text" name="answer" id="answer" placeholder="Answer" maxlength="50"></input>
-										<div id="answer-error" style="color: #f2849e;"></div>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Submit" class="primary" /></li>
-								</ul>
-							</form>
-							<div id="puzzle-done">
-								<h2>Correct</h2>
-							</div>
+						<div id="puzzle-done">
+							<h2>Correct</h2>
 						</div>
 					</div>
 				</div>

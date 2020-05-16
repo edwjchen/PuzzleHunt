@@ -36,12 +36,15 @@ function signup() {
                 email: result.user.email
             },
             success: function(data, textStatus, jqXHR) {
-            	window.location.href = 'team';
+				if (data.message == "exist") {
+					$("#signup-error").text("* Email already registered as an account")
+					$("#menu ul li:last").remove();
+					signout();
+				} else {
+					window.location.href = 'team';
+				}
         	},
-			error: function (jqXHR, textStatus, errorThrown) {
-				$("#signup-error").text("* Email already registered as an account")
-				$("#menu ul li:last").remove();
-				signout();	
+			error: function (jqXHR, textStatus, errorThrown) {	
 			}
         });
 	}).catch(function(error) {
@@ -67,12 +70,15 @@ function login() {
                 uid: result.user.uid
             },
             success: function(data, textStatus, jqXHR) {
-        		window.location.href = 'team';
+				if (data.message == "noexist") {
+					$("#menu ul li:last").remove();
+					$("#login-error").text("* Email is not registered as an account")
+					signout();
+				} else {
+					window.location.href = 'team';
+				}
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
-				$("#menu ul li:last").remove();
-				$("#login-error").text("* Email is not registered as an account")
-				signout();
 			}
         });
 	}).catch(function(error) {
